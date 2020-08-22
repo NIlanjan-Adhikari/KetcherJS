@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import * as structFormat from '../../data/convert/structformat';
 import { saveUserTmpl } from '../../state/templates';
 import { updateFormState } from '../../state/modal/form';
@@ -127,7 +127,7 @@ class Save extends Component {
 					readOnly
 					ref={(el) => { this.textarea = el; }}
 				/>
-				{ warning && <div className="warning">{warning}</div> }
+				{warning && <div className="warning">{warning}</div>}
 			</Dialog>
 		);
 	}

@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 
 import { sgroupMap as schemes } from '../../data/schema/struct-schema';
 
@@ -38,7 +38,7 @@ function Sgroup({ formState, ...prop }) {
 			<Form schema={schemes[type]} init={prop} {...formState}>
 				<SelectOneOf title="Type" name="type" schema={schemes} />
 				<fieldset className={type === 'DAT' ? 'data' : 'base'}>
-					{ content(type) }
+					{content(type)}
 				</fieldset>
 			</Form>
 		</Dialog>

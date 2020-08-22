@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 
 import Dialog from '../../component/dialog';
 
@@ -54,7 +54,7 @@ function About(props) {
 						<div>
 							<dt>
 								<a href="http://lifescience.opensource.epam.com/indigo/" target="_blank">Indigo
-									Toolkit
+								Toolkit
 								</a>
 							</dt>
 							<dd>

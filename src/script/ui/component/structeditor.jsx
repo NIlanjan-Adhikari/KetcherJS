@@ -15,7 +15,7 @@
  ***************************************************************************/
 
 import { upperFirst } from 'lodash/fp';
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import MeasureLog from './measurelog';
 import Editor from '../../editor';

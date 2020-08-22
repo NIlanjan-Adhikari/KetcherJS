@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
+import React from 'react';
 import element from '../../../chem/element';
 import { sketchingColors as elementColor } from '../../../chem/element-color';
 

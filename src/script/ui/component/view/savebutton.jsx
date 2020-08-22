@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import fs from 'filesaver.js';
 
 class SaveButton extends Component {
@@ -50,7 +50,7 @@ class SaveButton extends Component {
 				className={(!this.state.saver || !data) ? `disabled ${className}` : className}
 				{...props}
 			>
-				{ children }
+				{children}
 			</button>
 		);
 	}

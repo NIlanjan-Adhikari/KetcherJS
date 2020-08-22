@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 
 import { rgroupLogic as rgroupSchema } from '../../data/schema/struct-schema';
 import Form, { Field } from '../../component/form/form';
@@ -69,7 +69,7 @@ function rangeConv(range) { // structConv
 		.replace(/^,/, '').replace(/,$/, '');
 
 	return res.split(',').every(s => s.match(/^[>,<=]?[0-9]+$/g) ||
-			s.match(/^[0-9]+-[0-9]+$/g));
+		s.match(/^[0-9]+-[0-9]+$/g));
 }
 
 export default connect(

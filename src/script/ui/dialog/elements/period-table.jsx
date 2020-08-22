@@ -16,8 +16,8 @@
 
 import { range, xor } from 'lodash/fp';
 
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import element from '../../../chem/element';
 import { sketchingColors as elementColor } from '../../../chem/element-color';
@@ -54,7 +54,7 @@ const actinides = element.filter(el => el && el.type === 'actinide');
 function Header() {
 	return (
 		<tr>
-			{ range(0, 19).map(i => (<th>{i || ''}</th>)) }
+			{range(0, 19).map(i => (<th>{i || ''}</th>))}
 		</tr>
 	);
 }

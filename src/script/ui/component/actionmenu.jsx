@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
+import React from 'react';
 
 import classNames from 'classnames';
 
@@ -94,8 +94,8 @@ function ActionMenu({ name, menu, className, role, ...props }) {
 						className={classNames(props.status[item]) + ` ${item.id === props.opened ? 'opened' : ''}`}
 						onClick={ev => openHandle(ev, props.onOpen)}
 					>
-						{ showMenuOrButton(action, item, props.status[item], props) }
-						{ item.menu && <Icon name="dropdown" /> }
+						{showMenuOrButton(action, item, props.status[item], props)}
+						{item.menu && <Icon name="dropdown" />}
 					</li>
 				))
 			}

@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
+import React from 'react';
 
 function SelectList({ schema, value, onSelect, splitIndexes, ...props }) {
 	return (

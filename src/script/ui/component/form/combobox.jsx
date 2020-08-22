@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 class ComboBox extends Component {
 	constructor(props) {

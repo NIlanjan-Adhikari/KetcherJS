@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 class Tabs extends Component {
 	constructor(props) {
@@ -34,17 +34,17 @@ class Tabs extends Component {
 		return (
 			<ul {...props}>
 				<li className="tabs">
-					{ captions.map((caption, index) => (
+					{captions.map((caption, index) => (
 						<a // eslint-disable-line
 							className={this.state.tabIndex === index ? 'active' : ''}
 							onClick={ev => this.changeTab(ev, index)}
 						>
 							{caption}
 						</a>
-					)) }
+					))}
 				</li>
 				<li className="tabs-content">
-					{ children[this.state.tabIndex] }
+					{children[this.state.tabIndex]}
 				</li>
 			</ul>
 		);

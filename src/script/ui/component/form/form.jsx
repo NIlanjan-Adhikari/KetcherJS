@@ -15,8 +15,8 @@
  ***************************************************************************/
 
 import jsonschema from 'jsonschema';
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Input from './input';
 import { updateFormState } from '../../state/modal/form';
@@ -90,9 +90,9 @@ export default connect(
 function Label({ labelPos, title, children, ...props }) {
 	return (
 		<label {...props}>
-			{ title && labelPos !== 'after' ? `${title}:` : '' }
+			{title && labelPos !== 'after' ? `${title}:` : ''}
 			{children}
-			{ title && labelPos === 'after' ? title : '' }
+			{title && labelPos === 'after' ? title : ''}
 		</label>
 	);
 }
@@ -104,7 +104,7 @@ function Field(props) {
 	const { dataError, ...fieldOpts } = stateStore.field(name, onChange);
 
 	const formField = component ?
-		h(component, { ...fieldOpts, ...prop, schema: desc }) :
+		React.createElement(component, { ...fieldOpts, ...prop, schema: desc }) :
 		(<Input
 			name={name}
 			schema={desc}
@@ -120,7 +120,7 @@ function Field(props) {
 			title={prop.title || desc.title}
 			labelPos={labelPos}
 		>
-			{ formField }
+			{formField}
 		</Label>
 	);
 }

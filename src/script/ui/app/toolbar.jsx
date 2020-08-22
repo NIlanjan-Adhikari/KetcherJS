@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { connect } from 'preact-redux';
-import { h } from 'preact';
+import { connect } from 'react-redux';
+import React from 'react';
 
 import classNames from 'classnames';
 
@@ -268,7 +268,7 @@ export default connect(
 		freqAtoms: state.toolbar.freqAtoms,
 		opened: state.toolbar.opened,
 		visibleTools: state.toolbar.visibleTools
-	}),	{
+	}), {
 		onOpen: (menuName, isSelected) => ({ type: 'OPENED', data: { menuName, isSelected } })
 	}
 )(props => (

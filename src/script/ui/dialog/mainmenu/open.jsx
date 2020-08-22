@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { map as formatMap } from '../../data/convert/structformat';
 import Dialog from '../../component/dialog';
@@ -91,7 +91,7 @@ function structAcceptMimes() {
 }
 
 export default connect(
-	store => ({	server: store.server }),
+	store => ({ server: store.server }),
 	(dispatch, props) => ({
 		onOk: (res) => {
 			if (res.fragment) exec('copy');

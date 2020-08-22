@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { updateFormState, setDefaultSettings } from '../../state/modal/form';
 import { saveSettings } from '../../state/options';
 
@@ -45,10 +45,10 @@ function Settings(props) {
 			params={prop}
 			buttons={[
 				<OpenButton server={server} onLoad={onOpenFile}>
-						Open From File…
+					Open From File…
 				</OpenButton>,
 				<SaveButton data={JSON.stringify(formState.result)} filename="ketcher-settings">
-						Save To File…
+					Save To File…
 				</SaveButton>,
 				<button onClick={onReset}>Reset</button>,
 				'Cancel', 'OK'
@@ -97,7 +97,7 @@ function Settings(props) {
 						<Field name="showLoopIds" component={SelectCheckbox} />
 					</fieldset>
 				</Accordion>
-				{ !storage.isAvailable() ? <div className="warning">{storage.warningMessage}</div> : null }
+				{!storage.isAvailable() ? <div className="warning">{storage.warningMessage}</div> : null}
 			</Form>
 		</Dialog>
 	);

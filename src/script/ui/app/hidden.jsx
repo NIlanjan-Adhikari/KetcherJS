@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import ClipArea from '../component/cliparea';
 

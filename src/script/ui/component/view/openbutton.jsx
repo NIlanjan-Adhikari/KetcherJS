@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 class OpenButton extends Component {
 	constructor(props) {
@@ -50,7 +50,7 @@ class OpenButton extends Component {
 					type="file"
 					ref={(el) => { this.btn = el; }}
 				/>
-				{ children }
+				{children}
 			</button>
 		);
 	}

@@ -20,7 +20,7 @@ const pkg = require('./package.json');
 const options = minimist(process.argv.slice(2), {
 	string: ['dist', 'api-path', 'build-number', 'build-date', 'miew-path'],
 	default: {
-		'dist': 'dist',
+		dist: 'dist',
 		'api-path': '',
 		'miew-path': null,
 		'build-number': '',
@@ -29,13 +29,13 @@ const options = minimist(process.argv.slice(2), {
 });
 
 function getTask(path, options) {
-	return function(callback) {
-		let task = options.expName ? require(path)[options.expName] : require(path);
+	return function (callback) {
+		const task = options.expName ? require(path)[options.expName] : require(path);
 		return task(options, callback);
 	};
 }
 
-/*== test ==*/
+/* == test ==*/
 gulp.task('test-render', getTask('./gulp/tests', {
 	expName: 'testRender',
 	entry: 'test/render/render-test.js',
@@ -46,7 +46,7 @@ gulp.task('test-io', getTask('./gulp/tests', {
 	expName: 'testIO'
 }));
 
-/*== styles ==*/
+/* == styles ==*/
 gulp.task('icons-svg', getTask('./gulp/style-html', {
 	expName: 'iconsSvg',
 	src: ['src/icons/*.svg'],
@@ -56,20 +56,20 @@ gulp.task('icons-svg', getTask('./gulp/style-html', {
 gulp.task('style', gulp.series('icons-svg', getTask('./gulp/style-html', {
 	expName: 'style',
 	src: 'src/style/index.less',
-	pkg: pkg,
+	pkg,
 	dist: options.dist
 })));
 
-/*== version ==*/
+/* == version ==*/
 gulp.task('patch-version', getTask('./gulp/utils', {
 	expName: 'version',
-	pkg: pkg
+	pkg
 }));
 
-/*== script ==*/
+/* == script ==*/
 gulp.task('script', gulp.series('patch-version', getTask('./gulp/prod-script', Object.assign({
 	expName: 'script',
-	pkg: pkg,
+	pkg,
 	entry: 'src/script',
 	banner: 'src/script/util/banner.js'
 }, options))));
@@ -77,14 +77,12 @@ gulp.task('script', gulp.series('patch-version', getTask('./gulp/prod-script', O
 gulp.task('html', gulp.series('patch-version', getTask('./gulp/style-html', Object.assign({
 	expName: 'html',
 	src: 'src/template/index.hbs',
-	pkg: pkg
+	pkg
 }, options))));
 
-/*== assets ==*/
-gulp.task('doc', function () {
-	return gulp.src('doc/*.{png, jpg, gif}')
-		.pipe(gulp.dest(options.dist + '/doc'));
-});
+/* == assets ==*/
+gulp.task('doc', () => gulp.src('doc/*.{png, jpg, gif}')
+	.pipe(gulp.dest(options.dist + '/doc')));
 
 gulp.task('help', gulp.series('doc', getTask('./gulp/assets', {
 	expName: 'help',
@@ -92,10 +90,8 @@ gulp.task('help', gulp.series('doc', getTask('./gulp/assets', {
 	dist: options.dist
 })));
 
-gulp.task('logo', function () {
-	return gulp.src('src/logo/*')
-		.pipe(gulp.dest(options.dist + '/logo'));
-});
+gulp.task('logo', () => gulp.src('src/logo/*')
+	.pipe(gulp.dest(options.dist + '/logo')));
 
 gulp.task('copy', gulp.series('logo', getTask('./gulp/assets', {
 	expName: 'copy',
@@ -104,19 +100,19 @@ gulp.task('copy', gulp.series('logo', getTask('./gulp/assets', {
 	distrib: ['LICENSE', 'src/template/demo.html', 'src/tmpl_data/library.sdf', 'src/tmpl_data/library.svg']
 })));
 
-/*== check ==*/
+/* == check ==*/
 gulp.task('lint', getTask('./gulp/check', {
 	expName: 'lint',
 	src: 'src/script/**'
 }));
 
-gulp.task('check-epam-email', getTask('./gulp/check', {
-	expName: 'checkEpamEmail'
+gulp.task('check-commit-authorization', getTask('./gulp/check', {
+	expName: 'checkCommitAuthorization'
 }));
 
 gulp.task('check-deps-exact', getTask('./gulp/check', {
 	expName: 'checkDepsExact',
-	pkg: pkg
+	pkg
 }));
 
 gulp.task('clean', getTask('./gulp/clean', {
@@ -124,19 +120,19 @@ gulp.task('clean', getTask('./gulp/clean', {
 	pkgName: pkg.name
 }));
 
-gulp.task('pre-commit', gulp.series('lint', 'check-epam-email', 'check-deps-exact'));
+gulp.task('pre-commit', gulp.series('lint', 'check-commit-authorization', 'check-deps-exact'));
 gulp.task('assets', gulp.series('copy', 'help'));
 gulp.task('code', gulp.series('style', 'script', 'html'));
 
-/*== dev ==*/
+/* == dev ==*/
 gulp.task('serve', gulp.series('clean', 'style', 'html', 'assets', getTask('./gulp/dev-script', Object.assign({
 	entry: 'src/script',
-	pkg: pkg
+	pkg
 }, options))));
-/*== production ==*/
+/* == production ==*/
 gulp.task('build', gulp.series('clean', 'code', 'assets'));
 gulp.task('archive', gulp.series('build', getTask('./gulp/prod-script', {
 	expName: 'archive',
-	pkg: pkg,
+	pkg,
 	dist: options.dist
 })));

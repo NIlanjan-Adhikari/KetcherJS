@@ -86,7 +86,8 @@
     "generate-svg": "gulp test-render && node test/utils/generate-svg.js",
     "style": "gulp style",
     "gulp": "gulp",
-    "postinstall": "guppy pre-commit || exit 0"
+    "postinstall": "guppy pre-commit || exit 0",
+    "lint": "gulp lint"
   },
   "dependencies": {
     "babel-polyfill": "6.23.0",
@@ -96,10 +97,11 @@
     "jsonschema": "1.1.1",
     "lodash": "4.17.19",
     "normalize.css": "4.2.0",
-    "preact": "8.1.0",
-    "preact-redux": "2.0.1",
     "query-string": "2.4.2",
     "raphael": "2.2.7",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-redux": "7.2.1",
     "redux": "3.6.0",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.2.0",

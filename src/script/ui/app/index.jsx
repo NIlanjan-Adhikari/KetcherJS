@@ -14,8 +14,9 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component, render } from 'preact';
-import { Provider, connect } from 'preact-redux';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Provider, connect } from 'react-redux';
 
 import { AppCliparea, AppHidden } from './hidden';
 import AppEditor from './editor';
@@ -50,7 +51,7 @@ function init(el, options, server) {
 	store.dispatch(initKeydownListener(el));
 	store.dispatch(initResize());
 
-	render((
+	ReactDOM.render((
 		<Provider store={store}>
 			<App />
 		</Provider>

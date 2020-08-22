@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { pick } from 'lodash/fp';
 
 import Dialog from '../../component/dialog';
@@ -112,7 +112,7 @@ class MiewComponent extends Component {
 				buttons={[
 					<div className="warning">{CHANGING_WARNING}</div>,
 					'Close',
-					<button	onClick={() => this.exportCML()}>
+					<button onClick={() => this.exportCML()}>
 						Apply
 					</button>
 				]}

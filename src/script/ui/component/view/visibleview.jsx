@@ -14,8 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
-/** @jsx h */
+import React, { Component } from 'react';
 
 const STYLE_INNER = 'position:relative; overflow:hidden; width:100%; min-height:100%;';
 
@@ -91,7 +90,7 @@ export default class VirtualList extends Component {
 			<div onScroll={this.handleScroll} {...props}>
 				<div style={`${STYLE_INNER} height:${data.length * rowHeight}px;`}>
 					<Tag style={`${STYLE_CONTENT} top:${start * rowHeight}px;`}>
-						{ selection.map((d, i) => renderRow(d, start + i)) }
+						{selection.map((d, i) => renderRow(d, start + i))}
 					</Tag>
 				</div>
 			</div>

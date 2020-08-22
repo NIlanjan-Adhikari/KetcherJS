@@ -15,8 +15,8 @@
  ***************************************************************************/
 
 import { range } from 'lodash/fp';
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import keyName from 'w3c-keyname';
 import Dialog from '../../component/dialog';
@@ -96,11 +96,11 @@ class Analyse extends Component {
 				].map(item => (
 					<li>
 						<label>{item.name}:</label>
-						{ item.key === 'gross'
+						{item.key === 'gross'
 							? <FormulaInput value={values ? values[item.key] : 0} />
 							: <FrozenInput value={values ? roundOff(values[item.key], round[item.round]) : 0} />
 						}
-						{ item.round
+						{item.round
 							? <Input
 								schema={{
 									enum: range(0, 8),

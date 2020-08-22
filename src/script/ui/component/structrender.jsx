@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import Struct from '../../chem/struct';
 import molfile from '../../chem/molfile';
@@ -64,7 +64,7 @@ class StructRender extends Component {
 	render() {
 		const { struct, Tag = 'div', ...props } = this.props;
 		return (
-			<Tag /* ref="el" */ {...props}>{ struct ? null : 'No molecule' }</Tag>
+			<Tag /* ref="el" */ {...props}>{struct ? null : 'No molecule'}</Tag>
 		);
 	}
 }

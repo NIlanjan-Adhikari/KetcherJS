@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************/
-import { h } from 'preact';
+import React from 'react';
 import { xor } from 'lodash/fp';
 
 function oneOrMore(multipl, values, item) {

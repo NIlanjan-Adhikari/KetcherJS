@@ -60,7 +60,6 @@ module.exports.createBundleConfig = (options) => ({
 				'lodash',
 				'transform-class-properties',
 				'transform-object-rest-spread',
-				['transform-react-jsx', { pragma: 'h' }],
 				['transform-builtin-extend', { globals: ['Set', 'Map'] }]
 			]
 		}]

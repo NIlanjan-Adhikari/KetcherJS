@@ -18,18 +18,30 @@ const gutil = require('gulp-util');
 const eslint = require('gulp-eslint');
 const cp = require('child_process');
 
-module.exports.checkEpamEmail = function (options, cb) {
-	// TODO: should be pre-push and check remote origin
+const authorizations = {
+	'https://github.com/epam/ketcher.git': {
+		check: d => ((d = cp.execSync('git config user.email').toString().trim(), [/@epam.com$/.test(d), d])), // eslint-disable-line no-return-assign
+		message: data => ('Email ' + data + ' is not from EPAM domain.')
+	}
+};
+
+module.exports.checkCommitAuthorization = function (options, cb) {
 	try {
-		const email = cp.execSync('git config user.email').toString().trim();
-		if (/@epam.com$/.test(email)) {
+		const origin = cp.execSync('git config remote.origin.url').toString().trim();
+
+		const [isValid, data] = (!authorizations[origin] && [true, null])
+								|| authorizations[origin].check();
+
+		if (isValid) {
 			cb();
 		} else {
-			cb(new Error('Email ' + email + ' is not from EPAM domain.'));
+			cb(new gutil.PluginError('check-commit-authorization', authorizations[origin].message(data)));
 			gutil.log('To check git project\'s settings run `git config --list`');
 			gutil.log('Could not continue. Bye!');
 		}
-	} catch (e) {}
+	} catch (e) {
+		gutil.log(e);
+	}
 };
 
 module.exports.checkDepsExact = function (options, cb) {

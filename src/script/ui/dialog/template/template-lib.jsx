@@ -17,8 +17,8 @@
 import { escapeRegExp, chunk, flow, filter as _filter, reduce, omit } from 'lodash/fp';
 import { createSelector } from 'reselect';
 
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import sdf from '../../../chem/sdf';
 
@@ -114,7 +114,7 @@ class TemplateLib extends Component {
 
 	renderRow(row, index, COLS) {
 		return (
-			<div className="tr" key={index}>{ row.map((tmpl, i) => (
+			<div className="tr" key={index}>{row.map((tmpl, i) => (
 				<div
 					className={tmpl === this.props.selected ? 'td selected' : 'td'}
 					title={greekify(tmplName(tmpl, (index * COLS) + i))}
@@ -175,7 +175,7 @@ class TemplateLib extends Component {
 					rowHeight={120}
 					className="table"
 				>
-					{ (row, i) => this.renderRow(row, i, COLS) }
+					{(row, i) => this.renderRow(row, i, COLS)}
 				</VisibleView>
 			</Dialog>
 		);
@@ -190,7 +190,7 @@ export default connect(
 		onChangeGroup: group => dispatch(changeGroup(group)),
 		onAttach: tmpl => dispatch(editTmpl(tmpl)),
 		onOk: (res) => {
-			dispatch(onAction({	tool: 'template', opts: res	}));
+			dispatch(onAction({ tool: 'template', opts: res }));
 			props.onOk(res);
 		}
 	})

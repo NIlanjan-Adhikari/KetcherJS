@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { range } from 'lodash/fp';
 
 import { changeImage, shouldFragment, changeVersion } from '../../state/options';
@@ -42,7 +42,7 @@ function Recognize(prop) {
 			result={() => result(structStr, fragment)}
 			buttons={[
 				<OpenButton onLoad={onImage} type="image/*">
-						Choose file…
+					Choose file…
 				</OpenButton>,
 				<span className="open-filename">{file ? file.name : null}</span>,
 				file && (

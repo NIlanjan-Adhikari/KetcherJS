@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import { omit } from 'lodash';
 
 function GenericInput({ schema, value, onChange, type = 'text', ...props }) {
@@ -229,6 +229,6 @@ export default class Input extends Component {
 
 	render() {
 		const { children, onChange, ...props } = this.props;
-		return h(this.component, { ...this.ctrl, ...props });
+		return React.createElement(this.component, { ...this.ctrl, ...props });
 	}
 }

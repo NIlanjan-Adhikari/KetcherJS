@@ -14,8 +14,8 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import Form, { Field, SelectOneOf } from '../../component/form/form';
 import Dialog from '../../component/dialog';
 import ComboBox from '../../component/form/combobox';

@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import { xor } from 'lodash/fp';
 
 class Accordion extends Component {
@@ -36,7 +36,7 @@ class Accordion extends Component {
 		const { active } = this.state;
 		return (
 			<ul {...props}>
-				{ captions.map((caption, index) => (
+				{captions.map((caption, index) => (
 					<li className={'ac_tab ' + (active.includes(index) ? 'active' : 'hidden')}>
 						<a // eslint-disable-line
 							onClick={() => this.onActive(index)}
@@ -45,7 +45,7 @@ class Accordion extends Component {
 						</a>
 						{children[index]}
 					</li>
-				)) }
+				))}
 			</ul>
 		);
 	}
