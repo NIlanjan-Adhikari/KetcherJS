@@ -131,6 +131,7 @@ function openHandle(event, onOpen) {
 
 	onOpen(hiddenEl && hiddenEl.id, isSelected);
 	event.stopPropagation();
+	// event.preventDefault();
 }
 
 export default ActionMenu;

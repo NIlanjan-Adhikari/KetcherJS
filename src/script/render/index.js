@@ -69,8 +69,9 @@ function cumulativeOffset(el) {
 	var curleft = 0;
 	if (el.parentNode) {
 		do {
-			curtop += el.offsetTop || 0;
-			curleft += el.offsetLeft || 0;
+			const { marginTop, marginLeft } = window.getComputedStyle(el);
+			curtop += (el.offsetTop || 0) + (parseFloat(marginTop) || 0);
+			curleft += (el.offsetLeft || 0) + (parseFloat(marginLeft) || 0);
 			el = el.offsetParent;
 		} while (el);
 	}
