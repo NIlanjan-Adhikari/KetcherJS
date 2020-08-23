@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import React from 'react';
+import React, { useRef } from 'react';
 
 import classNames from 'classnames';
 
@@ -64,11 +64,14 @@ export function showMenuOrButton(action, item, status, props) { // eslint-disabl
 
 function ActionButton({ name, action, status = {}, onAction }) { // eslint-disable-line no-shadow
 	const shortcut = action.shortcut && shortcutStr(action.shortcut);
+	const baseRef = useRef(undefined);
+
 	return (
 		<button
+			ref={baseRef}
 			disabled={status.disabled}
 			onClick={(ev) => {
-				if (!status.selected || isMenuOpened(this.base) || action.action.tool === 'chiralFlag') {
+				if (!status.selected || isMenuOpened(baseRef.current) || action.action.tool === 'chiralFlag') {
 					onAction(action.action);
 					ev.stopPropagation();
 				}
@@ -90,6 +93,7 @@ function ActionMenu({ name, menu, className, role, ...props }) {
 			{
 				menu.map(item => (
 					<li
+						key={item.id || item}
 						id={item.id || item}
 						className={classNames(props.status[item]) + ` ${item.id === props.opened ? 'opened' : ''}`}
 						onClick={ev => openHandle(ev, props.onOpen)}

@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 import Struct from '../../chem/struct';
 import molfile from '../../chem/molfile';
@@ -39,6 +39,8 @@ function renderStruct(el, struct, options = {}) {
 }
 
 class StructRender extends Component {
+	baseRef = createRef();
+
 	constructor(props) {
 		super(props);
 		if (!(props.struct instanceof Struct)) {
@@ -56,7 +58,7 @@ class StructRender extends Component {
 	}
 
 	componentDidMount() {
-		const el = this.base;
+		const el = this.baseRef.current;
 		const { struct, options } = this.props;
 		renderStruct(el, struct, options);
 	}
@@ -64,7 +66,7 @@ class StructRender extends Component {
 	render() {
 		const { struct, Tag = 'div', ...props } = this.props;
 		return (
-			<Tag /* ref="el" */ {...props}>{struct ? null : 'No molecule'}</Tag>
+			<Tag ref={this.baseRef} {...props}>{struct ? null : 'No molecule'}</Tag>
 		);
 	}
 }

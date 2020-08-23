@@ -14,13 +14,15 @@
  * limitations under the License.
  ***************************************************************************/
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 const ieCb = window.clipboardData;
 
 class ClipArea extends Component {
+	baseRef = createRef();
+
 	componentDidMount() {
-		const el = this.base;
+		const el = this.baseRef.current;
 		this.target = this.props.target || el.parentNode;
 
 		this.listeners = {
@@ -82,6 +84,7 @@ class ClipArea extends Component {
 	render() {
 		return (
 			<textarea
+				ref={this.baseRef}
 				className="cliparea"
 				contentEditable
 				autoFocus // eslint-disable-line jsx-a11y/no-autofocus

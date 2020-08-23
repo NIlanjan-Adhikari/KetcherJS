@@ -35,15 +35,16 @@ const App = connect(
 	componentDidMount() {
 		this.props.checkServer();
 	}
-	render = props => (
-		<main role="application">
-			<AppHidden />
-			<AppEditor id="canvas" />
-			<Toolbar {...props} />
-			<AppCliparea />
-			<AppModal />
-		</main>
-	)
+	render() {
+		return (
+			<main role="application">
+				<AppHidden />
+				<AppEditor id="canvas" />
+				<Toolbar {...this.props} />
+				<AppCliparea />
+				<AppModal />
+			</main>);
+	}
 });
 
 function init(el, options, server) {

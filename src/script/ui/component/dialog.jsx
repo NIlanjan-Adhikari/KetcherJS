@@ -14,11 +14,13 @@
  * limitations under the License.
  ***************************************************************************/
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 import keyName from 'w3c-keyname';
 
 class Dialog extends Component {
+	baseRef = createRef();
+
 	exit(mode) {
 		const { params, result = () => null,
 			valid = () => !!result() } = this.props;
@@ -37,9 +39,9 @@ class Dialog extends Component {
 		ev.stopPropagation();
 	}
 	componentDidMount() {
-		const fe = this.base.querySelector(['input:not([type=checkbox]):not([type=button])', 'textarea',
+		const fe = this.baseRef.current.querySelector(['input:not([type=checkbox]):not([type=button])', 'textarea',
 			'[contenteditable]', 'select'].join(',')) ||
-			this.base.querySelector(['button.close'].join(','));
+			this.baseRef.current.querySelector(['button.close'].join(','));
 		console.assert(fe, 'No active buttons');
 		if (fe.focus) fe.focus();
 	}
@@ -56,6 +58,7 @@ class Dialog extends Component {
 		} = this.props; // see: https://git.io/v1KR6
 		return (
 			<form
+				ref={this.baseRef}
 				role="dialog"
 				onSubmit={ev => ev.preventDefault()}
 				onKeyDown={ev => this.keyDown(ev)}

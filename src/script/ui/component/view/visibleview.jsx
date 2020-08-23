@@ -14,13 +14,15 @@
  * limitations under the License.
  ***************************************************************************/
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 const STYLE_INNER = 'position:relative; overflow:hidden; width:100%; min-height:100%;';
 
 const STYLE_CONTENT = 'position:absolute; top:0; left:0; height:100%; width:100%; overflow:visible;';
 
 export default class VirtualList extends Component {
+	baseRef = createRef();
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,19 +32,19 @@ export default class VirtualList extends Component {
 	}
 
 	resize = (ev, reset) => {
-		const height = this.base.offsetHeight;
+		const height = this.baseRef.current.offsetHeight;
 
 		if (this.state.height !== height)
 			this.setState({ height });
 
 		if (reset) {
 			this.setState({ offset: 0 });
-			this.base.scrollTop = 0;
+			this.baseRef.current.scrollTop = 0;
 		}
 	};
 
 	handleScroll = () => {
-		this.setState({ offset: this.base.scrollTop });
+		this.setState({ offset: this.baseRef.current.scrollTop });
 		if (this.props.sync) this.forceUpdate();
 	};
 
@@ -87,7 +89,7 @@ export default class VirtualList extends Component {
 		const selection = data.slice(start, end);
 
 		return (
-			<div onScroll={this.handleScroll} {...props}>
+			<div ref={this.baseRef} onScroll={this.handleScroll} {...props}>
 				<div style={`${STYLE_INNER} height:${data.length * rowHeight}px;`}>
 					<Tag style={`${STYLE_CONTENT} top:${start * rowHeight}px;`}>
 						{selection.map((d, i) => renderRow(d, start + i))}

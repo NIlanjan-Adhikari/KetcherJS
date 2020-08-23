@@ -15,7 +15,7 @@
  ***************************************************************************/
 
 import { upperFirst } from 'lodash/fp';
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 import MeasureLog from './measurelog';
 import Editor from '../../editor';
@@ -56,17 +56,21 @@ function removeEditorHandlers(editor, props) {
 }
 
 class StructEditor extends Component {
+	baseRef = createRef();
+
 	shouldComponentUpdate() {
 		return false;
 	}
 
-	componentWillReceiveProps(props) {
+	// TODO Remove this unsafe method it's deprecated
+	// eslint-disable-next-line camelcase
+	UNSAFE_componentWillReceiveProps(props) {
 		setupEditor(this.instance, props, this.props);
 	}
 
 	componentDidMount() {
-		console.assert(this.base, 'No backing element');
-		this.instance = new Editor(this.base, { ...this.props.options });
+		console.assert(this.baseRef.current, 'No backing element');
+		this.instance = new Editor(this.baseRef.current, { ...this.props.options });
 		setupEditor(this.instance, this.props);
 		if (this.props.onInit)
 			this.props.onInit(this.instance);
@@ -78,8 +82,24 @@ class StructEditor extends Component {
 
 	render() {
 		const { Tag = 'div', struct, tool, toolOpts, options, ...props } = this.props;
+		// To prevent react from complaining that all these props doesn't exist on a div
+		const {
+			onInit,
+			onSelectionChange,
+			onElementEdit,
+			onQuickEdit,
+			onBondEdit,
+			onRgroupEdit,
+			onSgroupEdit,
+			onSdataEdit,
+			onMessage,
+			onAromatizeStruct,
+			onDearomatizeStruct,
+			...rest
+		} = props;
+
 		return (
-			<Tag onMouseDown={ev => ev.preventDefault()} {...props}>
+			<Tag ref={this.baseRef} onMouseDown={ev => ev.preventDefault()} {...rest}>
 				{/* svg here */}
 				<MeasureLog />
 			</Tag>
