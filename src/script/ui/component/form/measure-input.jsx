@@ -31,7 +31,7 @@ class MeasureInput extends Component {
 
 	handleChange(value) {
 		const convValue = convertValue(value, this.state.meas, 'px');
-		this.state.cust = value;
+		this.setState({ cust: value });
 		this.props.onChange(convValue);
 	}
 
@@ -52,8 +52,7 @@ class MeasureInput extends Component {
 		const { meas, cust } = this.state;
 		const { schema, value, onChange, ...props } = this.props;
 
-		if (meas === 'px' && cust.toFixed() - 0 !== value)
-			this.setState({ meas: 'px', cust: value }); // Hack: Set init value (RESET)
+		const usedValue = (meas === 'px' && cust.toFixed() - 0 !== value) ? value : cust;
 
 		return (
 			<div style={{ display: 'inline-flex' }} {...props}>
@@ -61,7 +60,7 @@ class MeasureInput extends Component {
 					schema={schema}
 					step={meas === 'px' || meas === 'pt' ? '1' : '0.001'}
 					style={{ width: '75%' }}
-					value={cust}
+					value={usedValue}
 					onChange={this.handleChange}
 					onBlur={this.calcValue}
 				/>
