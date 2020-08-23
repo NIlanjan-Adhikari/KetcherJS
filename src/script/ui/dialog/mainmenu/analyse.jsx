@@ -94,7 +94,7 @@ class Analyse extends Component {
 					{ name: 'Exact Mass', key: 'monoisotopic-mass', round: 'roundMass' },
 					{ name: 'Elemental Analysis', key: 'mass-composition' }
 				].map(item => (
-					<li>
+					<li key={item.key}>
 						<label>{item.name}:</label>
 						{item.key === 'gross'
 							? <FormulaInput value={values ? values[item.key] : 0} />

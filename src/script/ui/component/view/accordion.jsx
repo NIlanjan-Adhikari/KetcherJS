@@ -20,7 +20,9 @@ import { xor } from 'lodash/fp';
 class Accordion extends Component {
 	constructor(props) {
 		super(props);
-		this.state.active = props.active || [];
+		this.state = {
+			active: props.active || []
+		};
 	}
 	onActive(index) {
 		const { multiple = true } = this.props;
@@ -34,16 +36,19 @@ class Accordion extends Component {
 	render() {
 		const { children, captions, ...props } = this.props;
 		const { active } = this.state;
+
+		const childrenArray = React.Children.toArray(children);
+
 		return (
 			<ul {...props}>
 				{captions.map((caption, index) => (
-					<li className={'ac_tab ' + (active.includes(index) ? 'active' : 'hidden')}>
+					<li key={caption + index.toString()} className={'ac_tab ' + (active.includes(index) ? 'active' : 'hidden')}>
 						<a // eslint-disable-line
 							onClick={() => this.onActive(index)}
 						>
 							{caption}
 						</a>
-						{children[index]}
+						{childrenArray[index]}
 					</li>
 				))}
 			</ul>

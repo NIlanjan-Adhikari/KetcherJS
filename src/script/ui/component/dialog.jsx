@@ -79,6 +79,7 @@ class Dialog extends Component {
 					buttons.map(b => (typeof b !== 'string' ?
 						b : (
 							<input
+								key={b}
 								type="button"
 								value={b}
 								disabled={b === 'OK' && !valid()}

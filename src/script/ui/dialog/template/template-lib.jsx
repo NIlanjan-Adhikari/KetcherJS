@@ -114,8 +114,9 @@ class TemplateLib extends Component {
 
 	renderRow(row, index, COLS) {
 		return (
-			<div className="tr" key={index}>{row.map((tmpl, i) => (
+			<div key={index.toString()} className="tr">{row.map((tmpl, i) => (
 				<div
+					key={i.toString()}
 					className={tmpl === this.props.selected ? 'td selected' : 'td'}
 					title={greekify(tmplName(tmpl, (index * COLS) + i))}
 				>
@@ -144,6 +145,7 @@ class TemplateLib extends Component {
 				result={() => this.result()}
 				buttons={[
 					<SaveButton
+						key="Save To SDF…"
 						data={sdf.stringify(this.props.lib)}
 						filename="ketcher-tmpls.sdf"
 					>
@@ -174,9 +176,8 @@ class TemplateLib extends Component {
 					data={libRowsSelector({ lib, group, COLS })}
 					rowHeight={120}
 					className="table"
-				>
-					{(row, i) => this.renderRow(row, i, COLS)}
-				</VisibleView>
+					renderRow={(row, i) => this.renderRow(row, i, COLS)}
+				/>
 			</Dialog>
 		);
 	}

@@ -19,7 +19,7 @@ import { omit } from 'lodash';
 
 function GenericInput({ schema, value, onChange, type = 'text', ...props }) {
 	return (
-		<input type={type} value={value} onInput={onChange} {...props} />
+		<input type={type} value={value} onChange={onChange} {...props} />
 	);
 }
 
@@ -53,11 +53,11 @@ CheckBox.val = function (ev) {
 
 function Select({ schema, value, selected, onSelect, ...props }) {
 	return (
-		<select onChange={onSelect} {...props}>
+		<select onChange={onSelect} value={value} {...props}>
 			{
 				enumSchema(schema, (title, val) => (
 					<option
-						selected={selected(val, value)}
+						key={val}
 						value={typeof val !== 'object' && val}
 					>
 						{title}
@@ -123,6 +123,7 @@ function enumSchema(schema, cbOrIndex) {
 		return (isTypeValue ? schema : schema.enum).map((item, i) => {
 			const title = isTypeValue ? item.title :
 				schema.enumNames && schema.enumNames[i];
+			// TODO find how to set a key for this component
 			return cbOrIndex(title !== undefined ? title : item,
 				item.value !== undefined ? item.value : item);
 		});
@@ -216,9 +217,9 @@ function shallowCompare(a, b) {
 }
 
 export default class Input extends Component {
-	constructor({ component, ...props }) {
+	constructor(props) {
 		super(props);
-		this.component = component || componentMap(props);
+		this.component = props.component || componentMap(props);
 		this.ctrl = ctrlMap(this.component, props);
 	}
 

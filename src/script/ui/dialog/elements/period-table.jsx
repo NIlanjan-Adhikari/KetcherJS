@@ -53,9 +53,11 @@ const actinides = element.filter(el => el && el.type === 'actinide');
 
 function Header() {
 	return (
-		<tr>
-			{range(0, 19).map(i => (<th>{i || ''}</th>))}
-		</tr>
+		<thead>
+			<tr>
+				{range(0, 19).map(i => (<th key={i}>{i || ''}</th>))}
+			</tr>
+		</thead>
 	);
 }
 
@@ -64,7 +66,7 @@ function TypeChoise({ value, onChange, ...props }) {
 		<fieldset>
 			{
 				typeSchema.map(sc => (
-					<label>
+					<label key={sc.value}>
 						<input
 							type="radio"
 							value={sc.value}
@@ -85,8 +87,8 @@ function MainRow({ row, caption, refer, selected, onSelect, curEvents }) {
 		<tr>
 			<th>{caption}</th>
 			{
-				row.map(el => (typeof el !== 'number') ? (  // eslint-disable-line
-					<td>
+				row.map((el, index) => (typeof el !== 'number') ? (  // eslint-disable-line
+					<td key={index.toString()}>
 						<Atom
 							el={el}
 							className={selected(el.label) ? 'selected' : ''}
@@ -95,7 +97,7 @@ function MainRow({ row, caption, refer, selected, onSelect, curEvents }) {
 						/>
 					</td>
 				) : (
-					refer(el) ? <td className="ref">{refer(el)}</td> : <td colSpan={el} />
+					refer(el) ? <td key={index.toString()} className="ref">{refer(el)}</td> : <td key={index.toString()} colSpan={el} />
 				))
 			}
 		</tr>
@@ -107,8 +109,8 @@ function OutinerRow({ row, caption, selected, onSelect, curEvents }) {
 		<tr>
 			<th colSpan="3" className="ref">{caption}</th>
 			{
-				row.map(el => (
-					<td>
+				row.map((el, index) => (
+					<td key={index.toString()}>
 						<Atom
 							el={el}
 							className={selected(el.label) ? 'selected' : ''}
@@ -124,8 +126,8 @@ function OutinerRow({ row, caption, selected, onSelect, curEvents }) {
 }
 
 function AtomInfo({ el, isInfo }) {
-	const numberStyle = { color: elementColor[el.label] || 'black', 'font-size': '1.2em' };
-	const elemStyle = { color: elementColor[el.label] || 'black', 'font-weight': 'bold', 'font-size': '2em' };
+	const numberStyle = { color: elementColor[el.label] || 'black', fontSize: '1.2em' };
+	const elemStyle = { color: elementColor[el.label] || 'black', fontWeight: 'bold', fontSize: '2em' };
 	return (
 		<div className={`ket-atom-info ${isInfo ? '' : 'none'}`}>
 			<div style={numberStyle}>{element.map[el.label]}</div>
@@ -238,26 +240,29 @@ class ElementsTable extends Component { // eslint-disable-line
 		return (
 			<table summary="Periodic table of the chemical elements">
 				<Header />
-				{
-					main.map((row, i) => (
-						<MainRow
-							row={row}
-							caption={i + 1}
-							refer={o => o === 1 && (i === 5 ? '*' : '**')}
-							{...callbacks}
-						/>
-					))
-				}
-				<OutinerRow
-					row={lanthanides}
-					caption="*"
-					{...callbacks}
-				/>
-				<OutinerRow
-					row={actinides}
-					caption="**"
-					{...callbacks}
-				/>
+				<tbody>
+					{
+						main.map((row, i) => (
+							<MainRow
+								key={i.toString()}
+								row={row}
+								caption={i + 1}
+								refer={o => o === 1 && (i === 5 ? '*' : '**')}
+								{...callbacks}
+							/>
+						))
+					}
+					<OutinerRow
+						row={lanthanides}
+						caption="*"
+						{...callbacks}
+					/>
+					<OutinerRow
+						row={actinides}
+						caption="**"
+						{...callbacks}
+					/>
+				</tbody>
 			</table>
 		);
 	}

@@ -68,6 +68,7 @@ function GenSet({ labels, caption = '', selected, onSelect, ...props }) {
 			{
 				labels.map(label => (
 					<button
+						key={label}
 						onClick={() => onSelect(label)}
 						className={selected(label) ? 'selected' : ''}
 					>
@@ -104,6 +105,7 @@ function GenGroup({ gen, name, path, selected, onSelect }) {
 			{
 				schema.order.map(child => ( // TODO:order = Object.keys ifndef
 					<GenGroup
+						key={child}
 						gen={group}
 						name={child}
 						path={pk}

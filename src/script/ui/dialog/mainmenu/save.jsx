@@ -61,6 +61,10 @@ class Save extends Component {
 			enumNames: formats.map(fmt => structFormat.map[fmt].name)
 		});
 
+		this.state = {
+			structStr: null
+		};
+
 		this.changeType(this.isRxn ? 'rxn' : 'mol')
 			.then(res => (res instanceof Error ? props.onCancel() : null));
 	}

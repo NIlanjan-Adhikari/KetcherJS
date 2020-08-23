@@ -201,7 +201,7 @@ function ZoomList({ status, onAction }) {
 		>
 			{
 				zoomList.map(val => (
-					<option value={val}>{`${(val * 100).toFixed()}%`}</option>
+					<option key={val} value={val}>{`${(val * 100).toFixed()}%`}</option>
 				))
 			}
 		</select>
@@ -218,6 +218,7 @@ function AtomsList(atoms, { active, onAction }) {
 					const shortcut = basicAtoms.indexOf(label) > -1 ? shortcutStr(atomCuts[label]) : null;
 					return (
 						<li
+							key={label}
 							className={classNames({
 								selected: isAtom && active.opts.label === label
 							})}
@@ -243,6 +244,7 @@ function TemplatesList({ active, onAction }) {
 			{
 				templates.map((struct, i) => (
 					<li
+						key={`template-${i.toString()}`}
 						id={`template-${i}`}
 						className={classNames({
 							selected: isTmpl && active.opts.struct === struct

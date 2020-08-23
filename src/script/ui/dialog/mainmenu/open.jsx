@@ -54,6 +54,7 @@ class Open extends Component {
 				params={this.props}
 				buttons={[
 					<OpenButton
+						key="Open From File…"
 						server={this.props.server}
 						type={structAcceptMimes()}
 						onLoad={s => this.changeStructStr(s)}

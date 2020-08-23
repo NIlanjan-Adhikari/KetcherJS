@@ -49,14 +49,14 @@ let cache = null;
 class SystemFonts extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { availableFonts: [subfontname(props.value)] };
+		this.state = {
+			availableFonts: cache || [subfontname(props.value)]
+		};
 		this.setAvailableFonts();
 	}
 
 	setAvailableFonts() {
-		if (cache) {
-			this.setState({ availableFonts: cache });
-		} else {
+		if (!cache) {
 			checkInSystem().then((results) => {
 				cache = results.filter(i => i !== null);
 				this.setState({ availableFonts: cache });

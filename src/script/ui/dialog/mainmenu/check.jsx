@@ -82,7 +82,7 @@ function ErrorsCheck(props) {
 			{moleculeErrorsTypes.length === 0 ?
 				<dt>No errors found</dt> :
 				moleculeErrorsTypes.map(type => (
-					<div>
+					<div key={getOptionName(type)}>
 						<dt>{getOptionName(type)} warning:</dt>
 						<dd>{moleculeErrors[type]}</dd>
 					</div>

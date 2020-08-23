@@ -15,11 +15,16 @@
  ***************************************************************************/
 
 import jsonschema from 'jsonschema';
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { connect } from 'react-redux';
 
 import Input from './input';
 import { updateFormState } from '../../state/modal/form';
+
+const SchemaContext = React.createContext({
+	schema: null,
+	stateStore: null
+});
 
 class Form extends Component {
 	constructor({ onUpdate, schema, init, ...props }) {
@@ -41,11 +46,6 @@ class Form extends Component {
 		this.props.onUpdate(instance, valid, errs);
 	}
 
-	getChildContext() {
-		const { schema } = this.props;
-		return { schema, stateStore: this };
-	}
-
 	field(name, onChange) {
 		const { result, errors } = this.props;
 		const value = result[name];
@@ -61,8 +61,8 @@ class Form extends Component {
 		};
 	}
 
-	render(props) {
-		const { result, errors, init, children, schema, ...prop } = props;
+	render() {
+		const { result, errors, init, children, schema, valid, onUpdate, ...prop } = this.props;
 
 		if (schema.key && schema.key !== this.schema.key) {
 			this.schema = propSchema(schema, prop);
@@ -71,9 +71,11 @@ class Form extends Component {
 		}
 
 		return (
-			<form {...prop}>
-				{children}
-			</form>
+			<SchemaContext.Provider value={{ schema: this.props.schema, stateStore: this }}>
+				<div {...prop}>
+					{children}
+				</div>
+			</SchemaContext.Provider>
 		);
 	}
 }
@@ -99,7 +101,7 @@ function Label({ labelPos, title, children, ...props }) {
 
 function Field(props) {
 	const { name, onChange, className, component, labelPos, ...prop } = props;
-	const { schema, stateStore } = this.context;
+	const { schema, stateStore } = useContext(SchemaContext);
 	const desc = prop.schema || schema.properties[name];
 	const { dataError, ...fieldOpts } = stateStore.field(name, onChange);
 
@@ -116,7 +118,7 @@ function Field(props) {
 	return (
 		<Label
 			className={className}
-			data-error={dataError}
+			data-error={dataError || undefined}
 			title={prop.title || desc.title}
 			labelPos={labelPos}
 		>

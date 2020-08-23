@@ -17,21 +17,19 @@
 import React, { Component } from 'react';
 import fs from 'filesaver.js';
 
-class SaveButton extends Component {
-	constructor({ filename = 'unnamed', type = 'text/plain', className = '', ...props }) {
-		super({ filename, type, className, ...props });
-		fileSaver(props.server).then((saver) => {
-			this.setState({ saver });
-		});
-	}
+function saveFile(data, filename, type) {
+	const blob = new window.Blob([data], { type });
+	fs.saveAs(blob, filename);
+}
 
+class SaveButton extends Component {
 	save(ev) {
 		const noop = () => null;
-		const { filename, data, type, onSave = noop, onError = noop } = this.props;
+		const { filename = 'unnamed', data, type = 'text/plain', onSave = noop, onError = noop } = this.props;
 
-		if (this.state.saver && data) {
+		if (data) {
 			try {
-				this.state.saver(data, filename, type);
+				saveFile(data, filename, type);
 				onSave();
 			} catch (e) {
 				onError(e);
@@ -47,30 +45,13 @@ class SaveButton extends Component {
 		return (
 			<button
 				onClick={ev => this.save(ev)}
-				className={(!this.state.saver || !data) ? `disabled ${className}` : className}
+				className={!data ? `disabled ${className}` : className}
 				{...props}
 			>
 				{children}
 			</button>
 		);
 	}
-}
-
-function fileSaver(server) {
-	return new Promise((resolve, reject) => {
-		if (global.Blob && fs.saveAs) {
-			resolve((data, fn, type) => {
-				const blob = new Blob([data], { type }); // eslint-disable-line no-undef
-				fs.saveAs(blob, fn);
-			});
-		} else if (server) {
-			resolve(server.then(() => {
-				throw Error("Server doesn't still support echo method");
-			}));
-		} else {
-			reject(new Error('Your browser does not support opening files locally'));
-		}
-	});
 }
 
 export default SaveButton;

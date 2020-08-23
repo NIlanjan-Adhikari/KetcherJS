@@ -16,11 +16,23 @@
 
 import React, { Component, createRef } from 'react';
 
-const STYLE_INNER = 'position:relative; overflow:hidden; width:100%; min-height:100%;';
+const STYLE_INNER = {
+	position: 'relative',
+	overflow: 'hidden',
+	width: '100%',
+	minHeight: '100%'
+};
 
-const STYLE_CONTENT = 'position:absolute; top:0; left:0; height:100%; width:100%; overflow:visible;';
+const STYLE_CONTENT = {
+	position: 'absolute',
+	top: '0',
+	left: '0',
+	height: '100%',
+	width: '100%',
+	overflow: 'visible'
+};
 
-export default class VirtualList extends Component {
+export default class VisibleView extends Component {
 	baseRef = createRef();
 
 	constructor(props) {
@@ -65,12 +77,11 @@ export default class VirtualList extends Component {
 	}
 
 	render() {
-		const { data, rowHeight, children, Tag = 'div', overscanCount = 1, sync, ...props } = this.props;
+		const { data, rowHeight, children, Tag = 'div', overscanCount = 1, sync, renderRow, ...props } = this.props;
 		const { offset, height } = this.state;
 
 		// first visible row index
 		let start = (offset / rowHeight) || 0;
-		const renderRow = children[0];
 
 		// actual number of visible rows (without overscan)
 		let visibleRowCount = (height / rowHeight) || 0;
@@ -90,8 +101,8 @@ export default class VirtualList extends Component {
 
 		return (
 			<div ref={this.baseRef} onScroll={this.handleScroll} {...props}>
-				<div style={`${STYLE_INNER} height:${data.length * rowHeight}px;`}>
-					<Tag style={`${STYLE_CONTENT} top:${start * rowHeight}px;`}>
+				<div style={{ ...STYLE_INNER, height: `${data.length * rowHeight}px` }}>
+					<Tag style={{ ...STYLE_CONTENT, top: `${start * rowHeight}px` }}>
 						{selection.map((d, i) => renderRow(d, start + i))}
 					</Tag>
 				</div>

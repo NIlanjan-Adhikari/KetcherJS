@@ -19,7 +19,10 @@ import React, { Component } from 'react';
 class Tabs extends Component {
 	constructor(props) {
 		super(props);
-		this.state.tabIndex = props.tabIndex || 0;
+		this.state = {
+			tabIndex: props.tabIndex || 0
+		};
+
 		this.props.changeTab(this.state.tabIndex);
 	}
 
@@ -30,12 +33,15 @@ class Tabs extends Component {
 	}
 
 	render() {
-		const { children, captions, ...props } = this.props;
+		const { children, captions, changeTab, ...props } = this.props;
+		const childrenArray = React.Children.toArray(children);
+
 		return (
 			<ul {...props}>
 				<li className="tabs">
 					{captions.map((caption, index) => (
 						<a // eslint-disable-line
+							key={caption}
 							className={this.state.tabIndex === index ? 'active' : ''}
 							onClick={ev => this.changeTab(ev, index)}
 						>
@@ -44,7 +50,7 @@ class Tabs extends Component {
 					))}
 				</li>
 				<li className="tabs-content">
-					{children[this.state.tabIndex]}
+					{childrenArray[this.state.tabIndex]}
 				</li>
 			</ul>
 		);

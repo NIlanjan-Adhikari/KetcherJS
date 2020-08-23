@@ -44,13 +44,13 @@ function Settings(props) {
 			valid={() => formState.valid}
 			params={prop}
 			buttons={[
-				<OpenButton server={server} onLoad={onOpenFile}>
+				<OpenButton key="Open From File…" server={server} onLoad={onOpenFile}>
 					Open From File…
 				</OpenButton>,
-				<SaveButton data={JSON.stringify(formState.result)} filename="ketcher-settings">
+				<SaveButton key="Save To File…" data={JSON.stringify(formState.result)} filename="ketcher-settings">
 					Save To File…
 				</SaveButton>,
-				<button onClick={onReset}>Reset</button>,
+				<button key="Reset" onClick={onReset}>Reset</button>,
 				'Cancel', 'OK'
 			]}
 		>

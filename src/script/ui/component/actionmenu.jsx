@@ -93,7 +93,7 @@ function ActionMenu({ name, menu, className, role, ...props }) {
 			{
 				menu.map(item => (
 					<li
-						key={item.id || item}
+						key={name + '.' + (item.id || item)}
 						id={item.id || item}
 						className={classNames(props.status[item]) + ` ${item.id === props.opened ? 'opened' : ''}`}
 						onClick={ev => openHandle(ev, props.onOpen)}
