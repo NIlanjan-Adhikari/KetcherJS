@@ -30,7 +30,7 @@ module.exports.checkCommitAuthorization = function (options, cb) {
 		const origin = cp.execSync('git config remote.origin.url').toString().trim();
 
 		const [isValid, data] = (!authorizations[origin] && [true, null])
-								|| authorizations[origin].check();
+			|| authorizations[origin].check();
 
 		if (isValid) {
 			cb();
@@ -45,18 +45,21 @@ module.exports.checkCommitAuthorization = function (options, cb) {
 };
 
 module.exports.checkDepsExact = function (options, cb) {
-	const semver = require('semver'); // TODO: output corrupted packages
+	const semver = require('semver');
+	const badPackages = [];
 	const allValid = ['dependencies', 'devDependencies'].every((d) => {
 		const dep = options.pkg[d];
 		return Object.keys(dep).every((name) => {
 			const ver = dep[name];
-			return (semver.valid(ver) && semver.clean(ver));
+			const valid = (semver.valid(ver) && semver.clean(ver));
+			if (!valid) badPackages.push(`${name}: ${ver}`);
+			return valid;
 		});
 	});
 	if (!allValid) {
 		cb(new gutil.PluginError('check-deps-exact',
-			'All top level dependencies should be installed' +
-			'using `npm install --save-exact` command'));
+			'All top level dependencies should be installed ' +
+			`'using \`npm install --save-exact\` command (${badPackages.join(', ')})`));
 	} else {
 		cb();
 	}

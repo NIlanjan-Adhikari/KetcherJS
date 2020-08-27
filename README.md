@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/491bc452-756e-4494-b617-80d828244c11/deploy-status)](https://app.netlify.com/sites/react-ketcher/deploys)
+
 # EPAM Ketcher projects
 Copyright (c) 2018 EPAM Systems, Inc
 
