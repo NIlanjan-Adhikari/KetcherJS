@@ -1,11 +1,12 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 
 import api from '../../api';
 import Sketcher from './sketcher';
+import { NOOP_API } from '../context/HelperApiContext';
 
 
 const loadApiProxy = (
@@ -17,9 +18,23 @@ const loadApiProxy = (
 	'gross-formula-add-rsites': true
 });
 
-const apiProxy = loadApiProxy();
 const params = queryString.parse(document.location.search);
 
-const Ketcher: React.FC = () => <Sketcher helperApi={apiProxy} options={params} />;
+const Ketcher = () => {
+	const [helperApi, setHelperApi] = useState(NOOP_API);
+
+	useEffect(() => {
+		async function waitProxy() {
+			const apiProxy = await loadApiProxy(params.api_path);
+			setHelperApi(apiProxy);
+		}
+
+		waitProxy();
+	}, []);
+
+	return (
+		<Sketcher helperApi={helperApi} options={params} />
+	);
+};
 
 export default Ketcher;

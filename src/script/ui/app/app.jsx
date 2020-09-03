@@ -15,10 +15,10 @@
  ***************************************************************************/
 
 import React from 'react';
-import Sketcher from './sketcher';
+import Ketcher from './ketcher';
 
 const App = () => (
-	<Sketcher />
+	<Ketcher />
 );
 
 export default App;

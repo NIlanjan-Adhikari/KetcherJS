@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************/
+import { NOOP_API } from '../script/ui/context/HelperApiContext';
 
 function pollDeferred(process, complete, timeGap, startTimeGap) {
 	return new Promise((resolve, reject) => {
@@ -37,46 +38,12 @@ function parametrizeUrl(url, params) {
 }
 
 function api(base, defaultOptions) {
-	const baseUrl = !base || /\/$/.test(base) ? base : base + '/';
+	const baseUrl = ((!base || /\/$/.test(base)) ? base : base + '/') || '';
 
-	// TODO Wrap this to update helperApi in state
-	const info = request('GET', 'info').then(res => ({
-		indigoVersion: res['indigo_version'],
-		imagoVersions: res['imago_versions']
-	})).catch(() => {
-		throw Error('Server is not compatible'); 	// TODO Wrap this to update helperApi in state
-	});
-
-	function request(method, url, data, headers) {
-		if (data && method === 'GET')
-			url = parametrizeUrl(url, data);
-		return fetch(baseUrl + url, {
-			method,
-			headers: Object.assign({
-				Accept: 'application/json'
-			}, headers),
-			body: method !== 'GET' ? data : undefined,
-			credentials: 'same-origin'
-		})
-			.then(response => response.json()
-				.then(res => (response.ok ? res : Promise.reject(res.error))))
-			.catch((err) => {
-				throw Error(err);
-			});
-	}
-
-	function indigoCall(method, url, defaultData) {
-		return function (data, options) {
-			const body = Object.assign({}, defaultData, data);
-			body.options = Object.assign(body.options || {},
-				defaultOptions, options);
-			return info.then(() => request(method, url, JSON.stringify(body), {
-				'Content-Type': 'application/json'
-			}));
-		};
-	}
-
-	return Object.assign(info, {
+	const proxy = {
+		ready: false,
+		indigoVersion: null,
+		imagoVersions: null,
 		convert: indigoCall('POST', 'indigo/convert'),
 		layout: indigoCall('POST', 'indigo/layout'),
 		clean: indigoCall('POST', 'indigo/clean'),
@@ -102,6 +69,60 @@ function api(base, defaultOptions) {
 				))
 				.then(res => ({ struct: res.metadata.mol_str }));
 		}
+	};
+
+	function request(method, url, data, headers) {
+		if (data && method === 'GET')
+			url = parametrizeUrl(url, data);
+		return fetch(baseUrl + url, {
+			method,
+			headers: Object.assign({
+				Accept: 'application/json'
+			}, headers),
+			body: method !== 'GET' ? data : undefined,
+			credentials: 'same-origin'
+		})
+			.then(response => response.json()
+				.then(res => (response.ok ? res : Promise.reject(res.error))))
+			.catch((err) => {
+				throw Error(err);
+			});
+	}
+
+	function indigoCall(method, url, defaultData) {
+		return function (data, options) {
+			const body = Object.assign({}, defaultData, data);
+			body.options = Object.assign(
+				body.options || {},
+				defaultOptions,
+				options
+			);
+
+			return request(method, url, JSON.stringify(body), {
+				'Content-Type': 'application/json'
+			});
+		};
+	}
+
+	return new Promise(async (resolve) => {
+		let res;
+
+		try {
+			res = await request('GET', 'info');
+		} catch (error) {
+			resolve({
+				...NOOP_API,
+				error
+			});
+			return;
+		}
+
+		resolve({
+			...proxy,
+			ready: true,
+			indigoVersion: res['indigo_version'],
+			imagoVersions: res['imago_versions']
+		});
 	});
 }
 

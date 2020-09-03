@@ -33,5 +33,13 @@ Ketcher is an open-source web-based chemical structure editor incorporating high
 ## Build instructions
 Please read [DEVNOTES.md](DEVNOTES.md) for details.
 
+## Run instructions
+
+* Launch Indigo Service with 
+`docker run --restart=always -d -p 8002:8002 -e "INDIGO_UWSGI_RUN_PARAMETERS=--plugin python3 --py-autoreload=1" -e "PYTHONPATH=/srv/indigo-python" -e "PYTHONDONTWRITEBYTECODE=1" --name=indigo_service epmlsop/indigo_service:latest /bin/sh -c "supervisord -n"`
+* `npm run start`
+* Open browser on http://localhost:9966/?api_path=https://lifescience.opensource.epam.com/v2/ (check actual port in the terminal)
+
+
 ## License
 Please read [LICENSE](LICENSE) and [NOTICE](NOTICE) for details.
