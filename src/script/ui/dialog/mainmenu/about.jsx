@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import Dialog from '../../component/dialog';
 
 function About(props) {
-	const indigoInfo = props.indigoVersion && props.indigoVersion.split('.r'); // Indigo version and build info
+	const indigoInfo = props.helperApi && props.helperApi.indigoVersion ? props.helperApi.indigoVersion.split('.r') : undefined; // Indigo version and build info
 
 	return (
 		<Dialog
@@ -50,7 +50,7 @@ function About(props) {
 						</dd>) : null
 				}
 				{
-					props.indigoVersion ? (
+					indigoInfo ? (
 						<div>
 							<dt>
 								<a href="http://lifescience.opensource.epam.com/indigo/" target="_blank">Indigo

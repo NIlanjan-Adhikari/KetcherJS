@@ -19,7 +19,7 @@
 import tools from './tools';
 import atoms from './atoms';
 import zoom from './zoom';
-import server from './server';
+import serverAssistedFeatures from './server'; // TODO OK
 import debug from './debug';
 import templates from './templates';
 import { exec } from '../component/cliparea';
@@ -91,7 +91,7 @@ export default {
 		},
 		selected: ({ actions }) => (
 			actions && // TMP
-				actions.active && actions.active.tool === 'paste'
+			actions.active && actions.active.tool === 'paste'
 		)
 	},
 	settings: {
@@ -110,7 +110,8 @@ export default {
 	'reaction-automap': {
 		title: 'Reaction Auto-Mapping Tool',
 		action: { dialog: 'automap' },
-		disabled: (editor, server, options) => !options.app.server || !editor.struct().hasRxnArrow()
+		disabled: (editor, _, options) =>
+			!options.app.helperApi || !options.app.helperApi.ready || !editor.struct().hasRxnArrow()
 	},
 	'period-table': {
 		title: 'Periodic Table',
@@ -147,7 +148,7 @@ export default {
 			}
 		}
 	},
-	...server,
+	...serverAssistedFeatures,
 	...debug,
 	...tools,
 	...atoms,

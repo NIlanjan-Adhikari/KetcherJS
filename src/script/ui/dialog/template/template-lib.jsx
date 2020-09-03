@@ -47,7 +47,6 @@ function tmplName(tmpl, i) {
 }
 
 function partition(n, array) {
-	console.warn('partition', n);
 	return chunk(n)(array);
 }
 
@@ -63,7 +62,6 @@ const filterLibSelector = createSelector(
 );
 
 function filterLib(lib, filter) {
-	console.warn('Filter', filter);
 	const re = new RegExp(escapeRegExp(greekify(filter)), 'i');
 	return flow(
 		_filter(item =>
@@ -84,7 +82,6 @@ const libRowsSelector = createSelector(
 );
 
 function libRows(lib, group, COLS) {
-	console.warn('Group', group);
 	return partition(COLS, lib[group]);
 }
 

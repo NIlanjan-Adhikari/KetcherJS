@@ -21,7 +21,7 @@ import { fromBond, toBond, fromSgroup, toSgroup, fromElement, toElement } from '
 import acts from '../../action';
 
 import { openDialog } from '../modal';
-import { serverCall } from '../server';
+import { serverCall } from '../server'; // TODO OK
 
 export default function initEditor(dispatch, getState) {
 	const updateAction = debounce(100, () => dispatch({ type: 'UPDATE' }));
@@ -124,14 +124,16 @@ export default function initEditor(dispatch, getState) {
 				alert(msg.error); // eslint-disable-line no-undef
 		},
 		onAromatizeStruct: (struct) => {
-			const state = getState();
-			const serverOpts = state.options.getServerSettings();
-			return serverCall(state.editor, state.server, 'aromatize', serverOpts, struct);
+			const { options, editor } = getState();
+			const { app: { helperApi } } = options;
+			const serverOpts = options.getServerSettings();
+			return serverCall(editor, helperApi, 'aromatize', serverOpts, struct);
 		},
 		onDearomatizeStruct: (struct) => {
-			const state = getState();
-			const serverOpts = state.options.getServerSettings();
-			return serverCall(state.editor, state.server, 'dearomatize', serverOpts, struct);
+			const { options, editor } = getState();
+			const { app: { helperApi } } = options;
+			const serverOpts = options.getServerSettings();
+			return serverCall(editor, helperApi, 'dearomatize', serverOpts, struct);
 		},
 		onMouseDown: () => {
 			updateAction();

@@ -20,12 +20,12 @@ export function load(structStr, options) {
 	return (dispatch, getState) => {
 		const state = getState();
 		const editor = state.editor;
-		const server = state.server;
+		const { options: { app: { helperApi } } } = state;
 
 		options = options || {};
 		// TODO: check if structStr is parsed already
 		// utils.loading('show');
-		const parsed = structFormat.fromString(structStr, options, server);
+		const parsed = structFormat.fromString(structStr, options, helperApi);
 
 		return parsed.then((struct) => {
 			// utils.loading('hide');

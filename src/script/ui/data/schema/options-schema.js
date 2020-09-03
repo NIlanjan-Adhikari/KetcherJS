@@ -117,7 +117,7 @@ const render = {
 	}
 };
 
-const server = {
+const serverAssistedFeatures = {
 	'smart-layout': {
 		title: 'Smart-layout',
 		type: 'boolean',
@@ -145,7 +145,7 @@ const server = {
 	}
 };
 
-export const SERVER_OPTIONS = Object.keys(server);
+export const SERVERASSISTED_OPTIONS = Object.keys(serverAssistedFeatures);
 
 const debug = {
 	showAtomIds: {
@@ -200,7 +200,7 @@ const optionsSchema = {
 	properties: {
 		...editor,
 		...render,
-		...server,
+		...serverAssistedFeatures,
 		...debug,
 		...miew
 	}

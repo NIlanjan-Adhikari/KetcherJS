@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import * as structFormat from '../../data/convert/structformat';
 import { saveUserTmpl } from '../../state/templates';
 import { updateFormState } from '../../state/modal/form';
+import HelperApiContext from '../../context/HelperApiContext';
 
 import Dialog from '../../component/dialog';
 import Form, { Field } from '../../component/form/form';
@@ -48,12 +49,15 @@ const saveSchema = {
 };
 
 class Save extends Component {
-	constructor(props) {
-		super(props);
+	static contextType = HelperApiContext;
+
+	constructor(props, context) {
+		super(props, context);
+		this.helperApi = this.context;
 		this.isRxn = this.props.struct.hasRxnArrow();
 
 		const formats = [this.isRxn ? 'rxn' : 'mol', 'smiles'];
-		if (this.props.server) formats.push('smiles-ext', 'smarts', 'inchi', 'inchi-aux', 'cml');
+		if (this.helperApi && this.helperApi.ready) formats.push('smiles-ext', 'smarts', 'inchi', 'inchi-aux', 'cml');
 
 		this.saveSchema = saveSchema;
 		this.saveSchema.properties.format = Object.assign(this.saveSchema.properties.format, {
@@ -70,8 +74,8 @@ class Save extends Component {
 	}
 
 	changeType(type) {
-		const { struct, server, options, formState } = this.props;
-		const converted = structFormat.toString(struct, type, server, options);
+		const { struct, options, formState } = this.props;
+		const converted = structFormat.toString(struct, type, this.helperApi, options);
 		return converted.then(
 			(structStr) => {
 				this.setState({ structStr });
@@ -99,16 +103,17 @@ class Save extends Component {
 				params={this.props}
 				buttons={[
 					<SaveButton
+						key="Save to File..."
 						data={structStr}
 						filename={filename + structFormat.map[format].ext[0]}
 						type={format.mime}
-						server={this.props.server}
 						onSave={() => this.props.onOk()}
 						disabled={!formState.valid || isCleanStruct}
 					>
 						Save To File…
 					</SaveButton>,
 					<button
+						key="Save to Templates"
 						className="save-tmpl"
 						disabled={isCleanStruct}
 						onClick={() => this.props.onTmplSave(this.props.struct)}
@@ -127,7 +132,7 @@ class Save extends Component {
 					<Field name="format" onChange={value => this.changeType(value)} />
 				</Form>
 				<textarea
-					value={structStr}
+					value={structStr || ''}
 					readOnly
 					ref={(el) => { this.textarea = el; }}
 				/>
@@ -139,7 +144,6 @@ class Save extends Component {
 
 export default connect(
 	store => ({
-		server: store.options.app.server ? store.server : null,
 		struct: store.editor.struct(),
 		options: store.options.getServerSettings(),
 		formState: store.modal.form

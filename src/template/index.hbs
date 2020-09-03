@@ -13,7 +13,6 @@
 
 	<link rel="stylesheet" href="{{pkg.name}}.css">
 	<script src="raphael.min.js"></script>
-	<script src="{{pkg.name}}.js"></script>
 
 	{{#if miew}}
 	<link rel="stylesheet" href="Miew.min.css">
@@ -22,9 +21,12 @@
 </head>
 
 <body>
-	<div id="editorRoot" role="application" class="application">
+	<div id="root">
 
 	</div>
+
+	<script src="{{pkg.name}}.js"></script>
+
 </body>
 
 </html>

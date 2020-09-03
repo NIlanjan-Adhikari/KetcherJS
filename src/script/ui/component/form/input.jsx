@@ -42,7 +42,7 @@ TextArea.val = ev => ev.target.value;
 
 function CheckBox({ schema, value, onChange, ...props }) {
 	return (
-		<input type="checkbox" checked={value} onClick={onChange} {...props} />
+		<input type="checkbox" checked={value} onChange={onChange} {...props} />
 	);
 }
 

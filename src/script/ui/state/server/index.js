@@ -19,31 +19,15 @@ import Pool from '../../../util/pool';
 
 import molfile from '../../../chem/molfile';
 
-import { setStruct, appUpdate } from '../options';
+import { setStruct } from '../options';
 import { checkErrors } from '../modal/form';
 import { load } from '../shared';
 
-export function checkServer() {
-	return (dispatch, getState) => {
-		const server = getState().server;
-
-		server.then(
-			res => dispatch(appUpdate({
-				indigoVersion: res.indigoVersion,
-				imagoVersions: res.imagoVersions,
-				server: true
-			})),
-			err => console.info(err)
-			// TODO: notification info
-		);
-	};
-}
-
 export function recognize(file, version) {
 	return (dispatch, getState) => {
-		const rec = getState().server.recognize;
+		const { options: { app: { helperApi } } } = getState();
 
-		const process = rec(file, version).then((res) => {
+		const process = helperApi.recognize(file, version).then((res) => {
 			dispatch(setStruct(res.struct));
 		}, () => {
 			dispatch(setStruct(null));
@@ -72,13 +56,13 @@ function ketcherCheck(struct, checkParams) {
 
 export function check(optsTypes) {
 	return (dispatch, getState) => {
-		const { editor, server } = getState();
+		const { editor, options: { app: { helperApi } } } = getState();
 		const ketcherErrors = ketcherCheck(editor.struct(), optsTypes);
 
 		const options = getState().options.getServerSettings();
 		options.data = { types: without(['valence', 'chiral_flag'], optsTypes) };
 
-		return serverCall(editor, server, 'check', options)
+		return serverCall(editor, helperApi, 'check', options)
 			.then((res) => {
 				res = Object.assign(res, ketcherErrors); // merge Indigo check with Ketcher check
 				dispatch(checkErrors(res));
@@ -94,14 +78,14 @@ export function automap(res) {
 
 export function analyse() {
 	return (dispatch, getState) => {
-		const { editor, server } = getState();
+		const { editor, options: { app: { helperApi } } } = getState();
 		const options = getState().options.getServerSettings();
 		options.data = {
 			properties: ['molecular-weight', 'most-abundant-mass',
 				'monoisotopic-mass', 'gross', 'mass-composition']
 		};
 
-		return serverCall(editor, server, 'calculate', options)
+		return serverCall(editor, helperApi, 'calculate', options)
 			.then(values => dispatch({
 				type: 'CHANGE_ANALYSE',
 				data: { values }
@@ -113,11 +97,13 @@ export function analyse() {
 
 export function serverTransform(method, data, struct) {
 	return (dispatch, getState) => {
-		const state = getState();
-		const opts = state.options.getServerSettings();
+		const { options, editor } = getState();
+		const { app: { helperApi } } = options;
+
+		const opts = options.getServerSettings();
 		opts.data = data;
 
-		serverCall(state.editor, state.server, method, opts, struct)
+		serverCall({ editor, helperApi, method, opts, struct })
 			.then(res => dispatch(load(res.struct, {
 				rescale: method === 'layout',
 				reactionRelayout: method === 'clean'
@@ -127,7 +113,7 @@ export function serverTransform(method, data, struct) {
 	};
 }
 
-export function serverCall(editor, server, method, options, struct) {
+export function serverCall({ editor, helperApi, method, options, struct }) {
 	const selection = editor.selection();
 	let selectedAtoms = [];
 
@@ -143,12 +129,11 @@ export function serverCall(editor, server, method, options, struct) {
 		selectedAtoms = selectedAtoms.map(aid => reindexMap.get(aidMap.get(aid)));
 	}
 
-	return server.then(() =>
-		server[method](Object.assign({
-			struct: molfile.stringify(struct, { ignoreErrors: true })
-		}, selectedAtoms && selectedAtoms.length > 0 ? {
-			selected: selectedAtoms
-		} : null, options.data), omit('data', options)));
+	return helperApi[method](Object.assign({
+		struct: molfile.stringify(struct, { ignoreErrors: true })
+	}, selectedAtoms && selectedAtoms.length > 0 ? {
+		selected: selectedAtoms
+	} : null, options.data), omit('data', options));
 }
 
 function getReindexMap(components) {

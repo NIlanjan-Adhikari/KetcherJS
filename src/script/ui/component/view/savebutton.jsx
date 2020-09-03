@@ -40,7 +40,7 @@ class SaveButton extends Component {
 	}
 
 	render() {
-		const { children, filename, data, className = 'save-button', ...props } = this.props;
+		const { children, filename, data, className = 'save-button', onSave, ...props } = this.props;
 
 		return (
 			<button

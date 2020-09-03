@@ -18,7 +18,7 @@ const cp = require('child_process');
 module.exports.version = function (options, cb) {
 	const pkg = options.pkg;
 	if (pkg.rev) return cb();
-	cp.exec('git rev-list ' + pkg.version + '..HEAD --count', function (err, stdout, stderr) {
+	cp.exec('git rev-list ' + pkg.version + '..HEAD --count', (err, stdout, stderr) => {
 		if (err && stderr.toString().search('path not in') > 0) {
 			cb(new Error('Could not fetch revision. ' +
 				'Please git tag the package version.'));
@@ -30,14 +30,14 @@ module.exports.version = function (options, cb) {
 	});
 };
 
-module.exports.createBundleConfig = (options) => ({
-	entries: 'src/script',
+module.exports.createBundleConfig = options => ({
+	entries: 'src/script/ui',
 	extensions: ['.js', '.jsx'],
 	debug: true,
 	standalone: options.pkg.name,
 	transform: [
 		['exposify', {
-			expose: { 'raphael': 'Raphael' }
+			expose: { raphael: 'Raphael' }
 		}],
 		['browserify-replace', {
 			replace: [
@@ -50,10 +50,10 @@ module.exports.createBundleConfig = (options) => ({
 		['babelify', {
 			presets: [
 				['env', {
-					'targets': {
-						'browsers': ['last 2 versions', 'safari > 8', 'chrome > 52']
+					targets: {
+						browsers: ['last 2 versions', 'safari > 8', 'chrome > 52']
 					},
-					'useBuiltIns': true
+					useBuiltIns: true
 				}],
 				'react'],
 			plugins: [

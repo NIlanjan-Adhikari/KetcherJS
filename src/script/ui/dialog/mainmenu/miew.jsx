@@ -22,6 +22,7 @@ import Dialog from '../../component/dialog';
 import * as structFormat from '../../data/convert/structformat';
 import { MIEW_OPTIONS } from '../../data/schema/options-schema';
 import { load } from '../../state';
+import HelperApiContext from '../../context/HelperApiContext';
 
 /* OPTIONS for MIEW */
 const BACKGROUND_COLOR = {
@@ -79,9 +80,13 @@ function createMiewOptions(userOpts) {
 const CHANGING_WARNING = 'Stereocenters can be changed after the strong 3D rotation';
 
 class MiewComponent extends Component {
+	static contextType = HelperApiContext;
+
 	componentDidMount() {
-		const { struct, server, miewOpts } = this.props;
+		const { struct, miewOpts } = this.props;
 		const Miew = window.Miew;
+
+		this.helperApi = this.context;
 
 		this.viewer = new Miew({
 			container: this.miewContainer
@@ -90,7 +95,7 @@ class MiewComponent extends Component {
 		if (this.viewer.init())
 			this.viewer.run();
 
-		structFormat.toString(struct, 'cml', server)
+		structFormat.toString(struct, 'cml', this.helperApi)
 			.then(res => this.viewer.load(res, { sourceType: 'immediate', fileType: 'cml' }))
 			.then(() => this.viewer.setOptions(miewOpts))
 			.catch(ex => console.error(ex.message));
@@ -102,7 +107,7 @@ class MiewComponent extends Component {
 	}
 
 	render() {
-		const { miewOpts, server, struct, ...prop } = this.props;
+		const { miewOpts, struct, ...prop } = this.props;
 
 		return (
 			<Dialog
@@ -130,7 +135,6 @@ class MiewComponent extends Component {
 export default connect(
 	store => ({
 		miewOpts: createMiewOptions(pick(MIEW_OPTIONS, store.options.settings)),
-		server: store.options.app.server ? store.server : null,
 		struct: store.editor.struct()
 	}),
 	(dispatch, props) => ({

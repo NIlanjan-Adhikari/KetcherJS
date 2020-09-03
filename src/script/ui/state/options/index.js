@@ -16,12 +16,11 @@
 
 import { pick } from 'lodash/fp';
 
-import { SERVER_OPTIONS, getDefaultOptions, validation } from '../../data/schema/options-schema';
+import { SERVERASSISTED_OPTIONS, getDefaultOptions, validation } from '../../data/schema/options-schema';
 import { storage } from '../../storage-ext';
 
 export const initOptionsState = {
 	app: {
-		server: false,
 		templates: false
 	},
 	analyse: {
@@ -41,7 +40,7 @@ export const initOptionsState = {
 	},
 	settings: Object.assign(getDefaultOptions(), validation(storage.getItem('ketcher-opts'))),
 	getServerSettings() {
-		return pick(SERVER_OPTIONS, this.settings);
+		return pick(SERVERASSISTED_OPTIONS, this.settings);
 	}
 };
 

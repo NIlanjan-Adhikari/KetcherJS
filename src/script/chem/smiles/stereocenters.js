@@ -106,21 +106,21 @@ Stereocenters.prototype.buildFromBonds = function (/* const int *atom_types, con
 };
 
 Stereocenters.allowed_stereocenters =
-[
-	{ elem: 'C', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'C', charge: 0, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'Si', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'Si', charge: 0, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'N', charge: 1, degree: 3, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'N', charge: 1, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'N', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 3 },
-	{ elem: 'S', charge: 0, degree: 4, n_double_bonds: 2, implicit_degree: 4 },
-	{ elem: 'S', charge: 1, degree: 3, n_double_bonds: 0, implicit_degree: 3 },
-	{ elem: 'S', charge: 0, degree: 3, n_double_bonds: 1, implicit_degree: 3 },
-	{ elem: 'P', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 3 },
-	{ elem: 'P', charge: 1, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
-	{ elem: 'P', charge: 0, degree: 4, n_double_bonds: 1, implicit_degree: 4 }
-];
+	[
+		{ elem: 'C', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'C', charge: 0, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'Si', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'Si', charge: 0, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'N', charge: 1, degree: 3, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'N', charge: 1, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'N', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 3 },
+		{ elem: 'S', charge: 0, degree: 4, n_double_bonds: 2, implicit_degree: 4 },
+		{ elem: 'S', charge: 1, degree: 3, n_double_bonds: 0, implicit_degree: 3 },
+		{ elem: 'S', charge: 0, degree: 3, n_double_bonds: 1, implicit_degree: 3 },
+		{ elem: 'P', charge: 0, degree: 3, n_double_bonds: 0, implicit_degree: 3 },
+		{ elem: 'P', charge: 1, degree: 4, n_double_bonds: 0, implicit_degree: 4 },
+		{ elem: 'P', charge: 0, degree: 4, n_double_bonds: 1, implicit_degree: 4 }
+	];
 
 
 Stereocenters.prototype.buildOneCenter = function (atomIdx/* , int group, int type, const int *bond_orientations*/) { // eslint-disable-line max-statements
@@ -149,7 +149,7 @@ Stereocenters.prototype.buildOneCenter = function (atomIdx/* , int group, int ty
 	var nPureHydrogens = 0;
 
 	if (degree > 4)
-		throw new Error('stereocenter with %d bonds are not supported' + degree);
+		throw new Error(`stereocenter with ${degree} bonds are not supported`);
 
 	neiList.forEach((nei, neiIdx) => {
 		var neiAtom = this.molecule.atoms.get(nei.aid);
@@ -181,7 +181,7 @@ Stereocenters.prototype.buildOneCenter = function (atomIdx/* , int group, int ty
 
 	Stereocenters.allowed_stereocenters.find((as) => {
 		if (as.elem === atom.label && as.charge === atom.charge &&
-		as.degree === degree && as.n_double_bonds === nDoubleBonds) {
+			as.degree === degree && as.n_double_bonds === nDoubleBonds) {
 			implicitDegree = as.implicit_degree;
 			return true;
 		}
@@ -286,7 +286,7 @@ Stereocenters.prototype.buildOneCenter = function (atomIdx/* , int group, int ty
 		sign = Stereocenters.sign(edgeIds[0].vec, edgeIds[1].vec, edgeIds[2].vec);
 
 		if ((lastAtomDir == Bond.PATTERN.STEREO.UP && sign > 0) ||
-		(lastAtomDir == Bond.PATTERN.STEREO.DOWN && sign < 0)) {
+			(lastAtomDir == Bond.PATTERN.STEREO.DOWN && sign < 0)) {
 			stereocenter.pyramid[0] = edgeIds[0].nei_idx;
 			stereocenter.pyramid[1] = edgeIds[1].nei_idx;
 			stereocenter.pyramid[2] = edgeIds[2].nei_idx;
@@ -372,7 +372,7 @@ Stereocenters.prototype.buildOneCenter = function (atomIdx/* , int group, int ty
 			var sign = Stereocenters.sign(edgeIds[0].vec, edgeIds[1].vec, edgeIds[2].vec);
 
 			if ((lastAtomDir == Bond.PATTERN.STEREO.UP && sign > 0) ||
-			(lastAtomDir == Bond.PATTERN.STEREO.DOWN && sign < 0)) {
+				(lastAtomDir == Bond.PATTERN.STEREO.DOWN && sign < 0)) {
 				stereocenter.pyramid[0] = edgeIds[0].nei_idx;
 				stereocenter.pyramid[1] = edgeIds[1].nei_idx;
 				stereocenter.pyramid[2] = edgeIds[2].nei_idx;
@@ -396,8 +396,8 @@ Stereocenters.prototype.buildOneCenter = function (atomIdx/* , int group, int ty
 				dir = -1;
 
 			if (Stereocenters.xyzzy(edgeIds[0].vec, edgeIds[1].vec, edgeIds[2].vec) === 1 ||
-			Stereocenters.xyzzy(edgeIds[0].vec, edgeIds[2].vec, edgeIds[1].vec) === 1 ||
-			Stereocenters.xyzzy(edgeIds[2].vec, edgeIds[1].vec, edgeIds[0].vec) === 1)
+				Stereocenters.xyzzy(edgeIds[0].vec, edgeIds[2].vec, edgeIds[1].vec) === 1 ||
+				Stereocenters.xyzzy(edgeIds[2].vec, edgeIds[1].vec, edgeIds[0].vec) === 1)
 				// all bonds belong to the same half-plane
 				dir = -dir;
 

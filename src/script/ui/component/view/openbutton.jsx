@@ -49,7 +49,7 @@ class OpenButton extends Component {
 	}
 
 	render() {
-		const { children, type, server, className = 'open-button', ...props } = this.props;
+		const { children, type, className = 'open-button', ...props } = this.props;
 
 		return (
 			<button onClick={() => this.btn.click()} className={className} {...props}>

@@ -23,7 +23,7 @@ import Dialog from '../../component/dialog';
 import Input from '../../component/form/input';
 
 import { changeRound } from '../../state/options';
-import { analyse } from '../../state/server';
+import { analyse } from '../../state/server'; // TODO OK
 
 function FrozenInput({ value }) {
 	return (

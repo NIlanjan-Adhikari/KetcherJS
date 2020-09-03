@@ -15,14 +15,17 @@
  ***************************************************************************/
 
 /* eslint-env node */
+// TODO Uncomment when the api in /src/script/index.js is stabilized
 
-var fs = require('fs');
+/*
 
-var ora = require('ora');
-var svgstore = require('svgstore');
+const fs = require('fs');
 
-var cols = require('./collections')();
-var browserSession = require('./browser-session');
+const ora = require('ora');
+const svgstore = require('svgstore');
+
+const cols = require('./collections')();
+const browserSession = require('./browser-session');
 
 browserSession((browser, testDir) => {
 	browser = browser.url(`${testDir}/render/render-test.html`);
@@ -49,7 +52,7 @@ browserSession((browser, testDir) => {
 				}, structStr, opts)
 				.waitForExist('#canvas-ketcher')
 				.getHTML('#canvas-ketcher', false).then(svg => {
-					// console.info(sampleName, svg.replace(/.*(viewBox=".+?").*/, "$1"));
+					// console.info(sampleName, svg.replace(/.*(viewBox=".+?").* /, "$1"));
 					sprites.add(sampleName, svg);
 					spinner.succeed();
 				});
@@ -60,3 +63,4 @@ browserSession((browser, testDir) => {
 		fs.writeFileSync('test/fixtures/fixtures.svg', sprites);
 	});
 });
+*/

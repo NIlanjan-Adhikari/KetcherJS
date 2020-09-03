@@ -14,11 +14,11 @@
  * limitations under the License.
  ***************************************************************************/
 
-import app from './app';
+import React from 'react';
+import Sketcher from './sketcher';
 
-function init(opts, apiServer) {
-	const ketcherWindow = document.querySelector('[role=application]') || document.body;
-	return app(ketcherWindow, opts, apiServer);
-}
+const App = () => (
+	<Sketcher />
+);
 
-export default init;
+export default App;

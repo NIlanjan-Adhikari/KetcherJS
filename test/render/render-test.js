@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************/
+// TODO Uncomment when the api in /src/script/index.js is stabilized
+
+/*
 
 const renderDiff = require('./render-diff').diff;
 const Render = require('../../src/script/render').default;
@@ -20,13 +23,13 @@ const Render = require('../../src/script/render').default;
 const ketcher = {
 	molfile: require('../../src/script/chem/molfile').default,
 	render: function render(el, struct, opts) {
-		var render = new Render(el, opts);
+		const render = new Render(el, opts);
 		render.setMolecule(struct);
 		render.update();
 	}
 };
 
-var defaultOpts = {
+const defaultOpts = {
 	width: 600,
 	height: 400,
 	render: {
@@ -45,18 +48,18 @@ var defaultOpts = {
 
 function createStyle(style) {
 	return Object.keys(style).reduce((str, prop) => {
-		var value = style[prop];
-		if (typeof value == 'object')
+		let value = style[prop];
+		if (typeof value === 'object')
 			return str;
-		if (typeof value == 'number' || typeof value == 'string')
+		if (typeof value === 'number' || typeof value === 'string')
 			value += 'px';
 		return str += `${prop}: ${value};`;
 	}, '');
 }
 
 function createEl(name, opts, parent) {
-	var [tag, id] = name.split('#');
-	var el = document.createElement(tag || 'div');
+	const [tag, id] = name.split('#');
+	const el = document.createElement(tag || 'div');
 	if (id)
 		el.id = id;
 	el.style = createStyle(opts);
@@ -64,39 +67,41 @@ function createEl(name, opts, parent) {
 	return el;
 }
 
-function ketcherRender(structStr, options) {
-	let opts = Object.assign({}, defaultOpts, options);
-	var target = createEl('#canvas-ketcher', opts);
-	var struct = ketcher.molfile.parse(structStr);
-	ketcher.render(target, struct, opts.render);
-	return target.firstElementChild;
-}
+// TODO Uncomment when the api in /src/script/index.js is stabilized
+// function ketcherRender(structStr, options) {
+// 	let opts = Object.assign({}, defaultOpts, options);
+// 	var target = createEl('#canvas-ketcher', opts);
+// 	var struct = ketcher.molfile.parse(structStr);
+// 	ketcher.render(target, struct, opts.render);
+// 	return target.firstElementChild;
+// }
 
 function symbolRender(symbolStr) {
-	const symbol = new DOMParser().parseFromString(symbolStr, "application/xml").firstElementChild;
+	const symbol = new DOMParser().parseFromString(symbolStr, 'application/xml').firstElementChild;
 
-	let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-	for (let attr of symbol.attributes)
+	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	for (const attr of symbol.attributes)
 		svg.setAttribute(attr.name, attr.value);
 	svg.innerHTML = symbol.innerHTML;
 
 	return svg;
 }
 
-function renderTest(structStr, opts) {
-	document.body.innerHTML = '';
-	return ketcherRender(structStr, opts);
-}
+// TODO Uncomment when the api in /src/script/index.js is stabilized
+// function renderTest(structStr, opts) {
+// 	document.body.innerHTML = '';
+// 	return ketcherRender(structStr, opts);
+// }
 
 function compareTest(structStr, symbolStr, opts) {
 	console.info('sample', opts.sample);
 
 	document.body.innerHTML = '';
 
-	var renderOpts = {
-		onComplete: function (diff) {
+	const renderOpts = {
+		onComplete(diff) {
 			document.body.innerHTML = '';
-			var diffImage = new Image();
+			const diffImage = new Image();
 			diffImage.src = diff.getImageDataUrl();
 
 			document.body.appendChild(diffImage);
@@ -107,15 +112,18 @@ function compareTest(structStr, symbolStr, opts) {
 		methods: ['ignoreAntialiasing', 'useOriginalSize']
 	};
 
-	var cmp = renderDiff(
-		ketcherRender(structStr, opts),
-		symbolRender(symbolStr),
-		renderOpts);
+	// TODO Uncomment when the api in /src/script/index.js is stabilized
+	// const cmp = renderDiff(
+	// 	ketcherRender(structStr, opts),
+	// 	symbolRender(symbolStr),
+	// 	renderOpts
+	// );
 
-	cmp.then(function () {
-		console.info('Cmp complete');
-	});
+	// cmp.then(() => {
+	// 	console.info('Cmp complete');
+	// });
 }
 
 window.renderTest = renderTest;
 window.compareTest = compareTest;
+*/

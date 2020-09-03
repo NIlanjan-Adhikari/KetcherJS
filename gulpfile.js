@@ -126,7 +126,7 @@ gulp.task('code', gulp.series('style', 'script', 'html'));
 
 /* == dev ==*/
 gulp.task('serve', gulp.series('clean', 'style', 'html', 'assets', getTask('./gulp/dev-script', Object.assign({
-	entry: 'src/script',
+	entry: 'src/script/ui',
 	pkg
 }, options))));
 /* == production ==*/

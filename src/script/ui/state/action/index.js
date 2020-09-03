@@ -17,29 +17,27 @@
 import { isEqual, isEmpty, pickBy } from 'lodash/fp';
 import acts from '../../action';
 
-function execute(activeTool, { action, editor, server, options }) {
+function execute(activeTool, { action, editor, options }) {
 	if (action.tool) {
 		if (editor.tool(action.tool, action.opts))
 			return action;
 	} else if (typeof action === 'function') {
-		action(editor, server, options);
-	} else {
-		console.info('no action');
+		action(editor, undefined, options);
 	}
 	return activeTool;
 }
 
-function selected(actObj, activeTool, { editor, server }) {
+function selected(actObj, activeTool, { editor }) {
 	if (typeof actObj.selected === 'function')
-		return actObj.selected(editor, server);
+		return actObj.selected(editor);
 	else if (actObj.action && actObj.action.tool)
 		return isEqual(activeTool, actObj.action);
 	return false;
 }
 
-function disabled(actObj, { editor, server, options }) {
+function disabled(actObj, { editor, options }) {
 	if (typeof actObj.disabled === 'function')
-		return actObj.disabled(editor, server, options);
+		return actObj.disabled(editor, undefined, options);
 	return false;
 }
 

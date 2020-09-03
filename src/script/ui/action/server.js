@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-import { serverTransform } from '../state/server';
+import { serverTransform } from '../state/server'; // TODO OK
 
 export default {
 	layout: {
@@ -23,7 +23,7 @@ export default {
 		action: {
 			thunk: serverTransform('layout')
 		},
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	clean: {
 		shortcut: 'Mod+Shift+l',
@@ -31,21 +31,21 @@ export default {
 		action: {
 			thunk: serverTransform('clean')
 		},
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	arom: {
 		title: 'Aromatize',
 		action: {
 			thunk: serverTransform('aromatize')
 		},
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	dearom: {
 		title: 'Dearomatize',
 		action: {
 			thunk: serverTransform('dearomatize')
 		},
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	cip: {
 		shortcut: 'Mod+p',
@@ -53,22 +53,22 @@ export default {
 		action: {
 			thunk: serverTransform('calculateCip')
 		},
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	check: {
 		title: 'Check Structure',
 		action: { dialog: 'check' },
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	analyse: {
 		title: 'Calculated Values',
 		action: { dialog: 'analyse' },
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	recognize: {
 		title: 'Recognize Molecule',
 		action: { dialog: 'recognize' },
-		disabled: (editor, server, options) => !options.app.server
+		disabled: (_, __, options) => !options.app.helperApi || !options.app.helperApi.ready
 	},
 	miew: {
 		title: '3D Viewer',

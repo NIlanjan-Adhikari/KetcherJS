@@ -34,7 +34,7 @@ const shared = combineReducers({
 	actionState: actionStateReducer,
 	toolbar: toolbarReducer,
 	modal: modalReducer,
-	server: (store = null) => store,
+	server: (store = null) => store, // TODO OK
 	editor: (store = null) => store,
 	options: optionsReducer,
 	templates: templatesReducer
@@ -53,7 +53,7 @@ function root(state, action) {
 
 	const sh = shared(state, {
 		...action,
-		...pick(['editor', 'server', 'options'], state)
+		...pick(['editor', 'server', 'options'], state) // TODO OK
 	});
 
 	return (sh === state.shared) ? state : {
@@ -61,14 +61,13 @@ function root(state, action) {
 	};
 }
 
-export default function (options, server) {
+export default function (options) {
 	// TODO: redux localStorage here
 	const initState = {
 		actionState: null,
 		editor: null,
 		modal: null,
 		options: Object.assign(initOptionsState, { app: options }),
-		server: server || Promise.reject(new Error('Standalone mode!')),
 		templates: initTmplsState
 	};
 

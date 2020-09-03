@@ -91,67 +91,54 @@ export function guess(structStr, strict) {
 	return strict ? null : 'mol';
 }
 
-export function toString(struct, format, server, serverOpts) {
+export function toString(struct, format, helperApi, serverOpts) {
 	console.assert(map[format], 'No such format');
 
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
 		const moldata = molfile.stringify(struct);
 		if (format === 'mol' || format === 'rxn') {
 			resolve(moldata);
 		} else if (format === 'smiles') {
 			resolve(smiles.stringify(struct));
+		} else if (!helperApi || !helperApi.ready) {
+			reject(Error(`${map[format].name} is not supported in standalone mode.`));
 		} else {
-			const converting = server
-				.then(() => server.convert({
-					struct: moldata,
-					output_format: map[format].mime
-				}, serverOpts))
-				.catch((err) => {
-					throw (err.message === 'Server is not compatible') ?
-						Error(`${map[format].name} is not supported in standalone mode.`) :
-						Error(`Convert error!\n${err.message}`);
-				})
+			const converting = helperApi.convert({
+				struct: moldata,
+				output_format: map[format].mime
+			}, serverOpts)
 				.then(res => res.struct);
+
 			resolve(converting);
 		}
 	});
 }
 
-export function fromString(structStr, opts, server, serverOpts) {
-	return new Promise((resolve) => {
+export function fromString(structStr, opts, helperApi, serverOpts) {
+	return new Promise((resolve, reject) => {
 		const format = guess(structStr);
 		console.assert(map[format], 'No such format');
 
 		if (format === 'mol' || format === 'rxn') {
 			const struct = molfile.parse(structStr, opts);
 			resolve(struct);
+		} else if (!helperApi || !helperApi.ready) {
+			reject(Error(`${map[format].name} is not supported in standalone mode.`));
 		} else {
 			const withCoords = map[format].supportsCoords;
-			const converting = server
-				.then(() => (
-					withCoords ? server.convert({
-						struct: structStr,
-						output_format: map['mol'].mime
-					}, serverOpts) : server.layout({
-						struct: structStr.trim(),
-						output_format: map['mol'].mime
-					}, serverOpts)
-				))
-				.catch((err) => {
-					if (err.message === 'Server is not compatible') {
-						const formatError = (format === 'smiles') ?
-							`${map['smiles-ext'].name} and opening of ${map['smiles'].name}` :
-							map[format].name;
-						throw Error(`${formatError} is not supported in standalone mode.`);
-					} else {
-						throw Error(`Convert error!\n${err.message}`);
-					}
-				})
-				.then((res) => {
-					const struct = molfile.parse(res.struct);
-					if (!withCoords) struct.rescale();
-					return struct;
-				});
+			const converting =
+				(withCoords ? helperApi.convert({
+					struct: structStr,
+					output_format: map['mol'].mime
+				}, serverOpts) : helperApi.layout({
+					struct: structStr.trim(),
+					output_format: map['mol'].mime
+				}, serverOpts))
+					.then((res) => {
+						const struct = molfile.parse(res.struct);
+						if (!withCoords) struct.rescale();
+						return struct;
+					});
 			resolve(converting);
 		}
 	});

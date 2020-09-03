@@ -21,12 +21,13 @@ const createBundleConfig = require('./utils').createBundleConfig;
 
 module.exports = function (options, cb) {
 	const bundleConfig = createBundleConfig(options);
-	const server = budo(`${bundleConfig.entries}:${options.pkg.name}.js`, {
+	const budoServer = budo(`${bundleConfig.entries}:${options.pkg.name}.js`, {
 		dir: options.dist,
 		browserify: bundleConfig,
 		stream: process.stdout,
 		host: '0.0.0.0',
 		live: true,
+		debug: true,
 		watchGlob: `${options.dist}/*.{html,css}`,
 		staticOptions: {
 			index: 'ketcher.html'
@@ -36,13 +37,13 @@ module.exports = function (options, cb) {
 	gulp.watch('src/style/**.less', gulp.series('style'));
 	gulp.watch('src/template/**', gulp.series('html'));
 	gulp.watch('doc/**', gulp.series('help'));
-	gulp.watch(['gulpfile.js', 'package.json'], function () {
-		server.close();
+	gulp.watch(['gulpfile.js', 'package.json'], () => {
+		budoServer.close();
 		cp.spawn('gulp', process.argv.slice(2), {
 			stdio: 'inherit'
 		});
 		process.exit(0);
 	});
 
-	return server;
+	return budoServer;
 };

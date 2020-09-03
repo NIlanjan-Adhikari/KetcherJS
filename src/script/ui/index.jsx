@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2018 EPAM Systems
+ * Copyright 2020 Iktos
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,11 @@
  * limitations under the License.
  ***************************************************************************/
 
-import templates from '../data/templates';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const templateLib = {
-	'template-lib': {
-		shortcut: 'Shift+t',
-		title: 'Custom Templates',
-		action: { dialog: 'templates' },
-		disabled: (editor, _, options) => !options.app.templates
-	}
-};
+import App from './app/app';
 
-export default templates.reduce((res, struct, i) => {
-	res[`template-${i}`] = {
-		title: `${struct.name}`,
-		shortcut: 't',
-		action: {
-			tool: 'template',
-			opts: { struct }
-		}
-	};
-	return res;
-}, templateLib);
-
+ReactDOM.render((
+	<App />
+), document.getElementById('root'));

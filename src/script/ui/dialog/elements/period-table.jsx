@@ -71,7 +71,7 @@ function TypeChoise({ value, onChange, ...props }) {
 							type="radio"
 							value={sc.value}
 							checked={sc.value === value}
-							onClick={() => onChange(sc.value)}
+							onChange={() => onChange(sc.value)}
 							{...props}
 						/>
 						{sc.title}

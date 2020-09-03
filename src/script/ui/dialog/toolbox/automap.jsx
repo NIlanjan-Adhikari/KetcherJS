@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 
 import Form, { Field } from '../../component/form/form';
 import Dialog from '../../component/dialog';
-import { automap } from '../../state/server';
+import { automap } from '../../state/server'; // TODO OK
 
 export const automapSchema = {
 	title: 'Reaction Auto-Mapping',

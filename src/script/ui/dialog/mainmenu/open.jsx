@@ -55,7 +55,6 @@ class Open extends Component {
 				buttons={[
 					<OpenButton
 						key="Open From File…"
-						server={this.props.server}
 						type={structAcceptMimes()}
 						onLoad={s => this.changeStructStr(s)}
 					>
@@ -66,13 +65,13 @@ class Open extends Component {
 			>
 				<textarea
 					value={structStr}
-					onInput={ev => this.changeStructStr(ev.target.value)}
+					onChange={ev => this.changeStructStr(ev.target.value)}
 				/>
 				<label>
 					<input
 						type="checkbox"
 						checked={fragment}
-						onClick={ev => this.changeFragment(ev.target)}
+						onChange={ev => this.changeFragment(ev.target)}
 					/>
 					Load as a fragment and copy to the Clipboard
 				</label>
@@ -92,7 +91,7 @@ function structAcceptMimes() {
 }
 
 export default connect(
-	store => ({ server: store.server }),
+	() => ({}),
 	(dispatch, props) => ({
 		onOk: (res) => {
 			if (res.fragment) exec('copy');

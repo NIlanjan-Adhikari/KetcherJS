@@ -39,11 +39,12 @@ function parametrizeUrl(url, params) {
 function api(base, defaultOptions) {
 	const baseUrl = !base || /\/$/.test(base) ? base : base + '/';
 
+	// TODO Wrap this to update helperApi in state
 	const info = request('GET', 'info').then(res => ({
 		indigoVersion: res['indigo_version'],
 		imagoVersions: res['imago_versions']
 	})).catch(() => {
-		throw Error('Server is not compatible');
+		throw Error('Server is not compatible'); 	// TODO Wrap this to update helperApi in state
 	});
 
 	function request(method, url, data, headers) {

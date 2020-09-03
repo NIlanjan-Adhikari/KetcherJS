@@ -33,7 +33,7 @@ import SystemFonts from '../../component/form/systemfonts';
 import SelectCheckbox from '../../component/form/select-checkbox';
 
 function Settings(props) {
-	const { initState, formState, server, onOpenFile, onReset, appOpts, ...prop } = props;
+	const { initState, formState, onOpenFile, onReset, appOpts, ...prop } = props;
 	const tabs = ['Rendering customization options', 'Atoms', 'Bonds', 'Server', '3D Viewer', 'Options for debugging'];
 
 	return (
@@ -44,7 +44,7 @@ function Settings(props) {
 			valid={() => formState.valid}
 			params={prop}
 			buttons={[
-				<OpenButton key="Open From File…" server={server} onLoad={onOpenFile}>
+				<OpenButton key="Open From File…" onLoad={onOpenFile}>
 					Open From File…
 				</OpenButton>,
 				<SaveButton key="Save To File…" data={JSON.stringify(formState.result)} filename="ketcher-settings">
@@ -78,7 +78,7 @@ function Settings(props) {
 						<Field name="bondThickness" component={MeasureInput} />
 						<Field name="stereoBondWidth" component={MeasureInput} />
 					</fieldset>
-					<fieldset className="server" disabled={!appOpts.server}>
+					<fieldset className="server" disabled={!appOpts.helperApi || !appOpts.helperApi.ready}>
 						<Field name="smart-layout" component={SelectCheckbox} />
 						<Field name="ignore-stereochemistry-errors" component={SelectCheckbox} />
 						<Field name="mass-skip-error-on-pseudoatoms" component={SelectCheckbox} />
@@ -104,7 +104,6 @@ function Settings(props) {
 }
 
 export default connect(store => ({
-	server: store.options.app.server ? store.server : null,
 	appOpts: store.options.app,
 	initState: store.options.settings,
 	formState: store.modal.form

@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import Dialog from '../../component/dialog';
 import Tabs from '../../component/view/tabs';
 import Form, { Field } from '../../component/form/form';
-import { check } from '../../state/server';
+import { check } from '../../state/server'; // TODO OK
 import { checkOpts } from '../../state/options';
 
 const checkSchema = {

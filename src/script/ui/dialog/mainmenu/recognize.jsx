@@ -20,7 +20,7 @@ import { range } from 'lodash/fp';
 
 import { changeImage, shouldFragment, changeVersion } from '../../state/options';
 import { load } from '../../state';
-import { recognize } from '../../state/server';
+import { recognize } from '../../state/server'; // TODO OK
 
 import Dialog from '../../component/dialog';
 import Input from '../../component/form/input';
